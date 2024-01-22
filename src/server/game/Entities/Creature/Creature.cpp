@@ -18,6 +18,7 @@
 #include "Creature.h"
 #include "BattlegroundMgr.h"
 #include "CellImpl.h"
+#include "CharmInfo.h"
 #include "CombatPackets.h"
 #include "Containers.h"
 #include "CreatureAI.h"
@@ -221,7 +222,10 @@ WorldPacket CreatureTemplate::BuildQueryData(LocaleConstant loc, Difficulty diff
     stats.CursorName = IconName;
 
     if (std::vector<uint32> const* items = sObjectMgr->GetCreatureQuestItemList(Entry, difficulty))
-        stats.QuestItems.insert(stats.QuestItems.begin(), items->begin(), items->end());
+        stats.QuestItems.assign(items->begin(), items->end());
+
+    if (std::vector<int32> const* currencies = sObjectMgr->GetCreatureQuestCurrencyList(Entry))
+        stats.QuestCurrencies.assign(currencies->begin(), currencies->end());
 
     if (loc != LOCALE_enUS)
         if (CreatureLocale const* creatureLocale = sObjectMgr->GetCreatureLocale(Entry))
@@ -2961,11 +2965,19 @@ void Creature::AllLootRemovedFromCorpse()
         if (m_loot && m_loot->loot_type == LOOT_SKINNING && m_loot->isLooted())
             return true;
 
+        bool hasSkinningLoot = false;
         for (auto const& [_, loot] : m_personalLoot)
-            if (loot->loot_type != LOOT_SKINNING || !loot->isLooted())
-                return false;
+        {
+            if (loot->loot_type == LOOT_SKINNING)
+            {
+                if (!loot->isLooted())
+                    return false;
 
-        return true;
+                hasSkinningLoot = true;
+            }
+        }
+
+        return hasSkinningLoot;
     }();
 
     if (isFullySkinned)
@@ -3218,6 +3230,11 @@ std::string Creature::GetNameForLocaleIdx(LocaleConstant locale) const
                 return cl->Name[locale];
 
     return GetName();
+}
+
+uint8 Creature::GetPetAutoSpellSize() const
+{
+    return MAX_SPELL_CHARM;
 }
 
 uint32 Creature::GetPetAutoSpellOnPos(uint8 pos) const
