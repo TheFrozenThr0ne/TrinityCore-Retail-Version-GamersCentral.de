@@ -1570,6 +1570,7 @@ void Player::RemoveFromWorld()
         StopCastingCharm();
         StopCastingBindSight();
         UnsummonPetTemporaryIfAny();
+        UnsummonBattlePetTemporaryIfAny();
         SetPower(POWER_COMBO_POINTS, 0);
         m_session->DoLootReleaseAll();
         m_lootRolls.clear();
@@ -1987,7 +1988,10 @@ Creature* Player::GetNPCIfCanInteractWith(ObjectGuid const& guid, NPCFlags npcFl
         return nullptr;
 
     // not unfriendly/hostile
-    if (!creature->HasUnitFlag2(UNIT_FLAG2_INTERACT_WHILE_HOSTILE) && creature->GetReactionTo(this) <= REP_UNFRIENDLY)
+    if (!creature->IsInteractionAllowedWhileHostile() && creature->GetReactionTo(this) <= REP_UNFRIENDLY)
+        return nullptr;
+
+    if (creature->IsInCombat() && !creature->IsInteractionAllowedInCombat())
         return nullptr;
 
     // not too far, taken from CGGameUI::SetInteractTarget
@@ -13888,7 +13892,7 @@ void Player::ApplyEnchantment(Item* item, EnchantmentSlot slot, bool apply, bool
     }
 
     // visualize enchantment at player and equipped items
-    if (slot == PERM_ENCHANTMENT_SLOT)
+    if (slot == PERM_ENCHANTMENT_SLOT && item->GetSlot() < m_playerData->VisibleItems.size())
         SetUpdateFieldValue(m_values.ModifyValue(&Player::m_playerData).ModifyValue(&UF::PlayerData::VisibleItems, item->GetSlot()).ModifyValue(&UF::VisibleItem::ItemVisual), item->GetVisibleItemVisual(this));
 
     if (apply_dur)
@@ -14364,7 +14368,7 @@ uint32 Player::GetGossipTextId(uint32 menuId, WorldObject* source)
     return textId;
 }
 
-uint32 Player::GetGossipMenuForSource(WorldObject* source)
+uint32 Player::GetGossipMenuForSource(WorldObject const* source) const
 {
     switch (source->GetTypeId())
     {
@@ -15376,9 +15380,7 @@ void Player::RewardQuest(Quest const* quest, LootItemType rewardType, uint32 rew
         UpdatePvPState();
     }
 
-    SendQuestGiverStatusMultiple();
-
-    SendQuestUpdate(quest_id);
+    SendQuestUpdate(quest_id, true, true);
 
     bool updateVisibility = false;
     if (quest->HasFlag(QUEST_FLAGS_UPDATE_PHASESHIFT))
@@ -16122,7 +16124,7 @@ void Player::RemoveRewardedQuest(uint32 questId, bool update /*= true*/)
         SendQuestUpdate(questId);
 }
 
-void Player::SendQuestUpdate(uint32 questId)
+void Player::SendQuestUpdate(uint32 questId, bool updateInteractions /*= true*/, bool updateGameObjectQuestGiverStatus /*= false*/)
 {
     SpellAreaForQuestMapBounds saBounds = sSpellMgr->GetSpellAreaForQuestMapBounds(questId);
 
@@ -16170,7 +16172,8 @@ void Player::SendQuestUpdate(uint32 questId)
             RemoveAurasDueToSpell(spellId);
     }
 
-    UpdateVisibleGameobjectsOrSpellClicks();
+    if (updateInteractions)
+        UpdateVisibleObjectInteractions(true, false, updateGameObjectQuestGiverStatus, true);
 }
 
 QuestGiverStatus Player::GetQuestDialogStatus(Object const* questgiver) const
@@ -16190,6 +16193,13 @@ QuestGiverStatus Player::GetQuestDialogStatus(Object const* questgiver) const
         }
         case TYPEID_UNIT:
         {
+            Creature const* questGiverCreature = questgiver->ToCreature();
+            if (!questGiverCreature->IsInteractionAllowedWhileHostile() && questGiverCreature->IsHostileTo(this))
+                return QuestGiverStatus::None;
+
+            if (!questGiverCreature->IsInteractionAllowedInCombat() && questGiverCreature->IsInCombat())
+                return QuestGiverStatus::None;
+
             if (CreatureAI* ai = questgiver->ToCreature()->AI())
                 if (Optional<QuestGiverStatus> questStatus = ai->GetDialogStatus(this))
                     return *questStatus;
@@ -16317,7 +16327,7 @@ void Player::SkipQuests(std::vector<uint32> const& questIds)
         }
 
         SetRewardedQuest(questId);
-        SendQuestUpdate(questId);
+        SendQuestUpdate(questId, false);
 
         if (!updateVisibility && quest->HasFlag(QUEST_FLAGS_UPDATE_PHASESHIFT))
             updateVisibility = PhasingHandler::OnConditionChange(this, false);
@@ -16326,7 +16336,7 @@ void Player::SkipQuests(std::vector<uint32> const& questIds)
         sScriptMgr->OnQuestStatusChange(this, quest, oldStatus, QUEST_STATUS_REWARDED);
     }
 
-    SendQuestGiverStatusMultiple();
+    UpdateVisibleObjectInteractions(true, false, true, true);
 
     // make full db save
     SaveToDB(false);
@@ -16637,7 +16647,7 @@ void Player::ItemRemovedQuestCheck(uint32 entry, uint32 /*count*/)
             IncompleteQuest(questId);
         }
     }
-    UpdateVisibleGameobjectsOrSpellClicks();
+    UpdateVisibleObjectInteractions(true, false, false, true);
 }
 
 void Player::KilledMonster(CreatureTemplate const* cInfo, ObjectGuid guid)
@@ -16860,7 +16870,7 @@ void Player::UpdateQuestObjectiveProgress(QuestObjectiveType objectiveType, int3
     }
 
     if (anyObjectiveChangedCompletionState)
-        UpdateVisibleGameobjectsOrSpellClicks();
+        UpdateVisibleObjectInteractions(true, false, false, true);
 
     if (updatePhaseShift)
         PhasingHandler::OnConditionChange(this);
@@ -17343,7 +17353,7 @@ void Player::SendQuestGiverStatusMultiple(GuidUnorderedSet const& guids)
         {
             // need also pet quests case support
             Creature* questgiver = ObjectAccessor::GetCreatureOrPetOrVehicle(*this, *itr);
-            if (!questgiver || questgiver->IsHostileTo(this))
+            if (!questgiver)
                 continue;
             if (!questgiver->HasNpcFlag(UNIT_NPC_FLAG_QUESTGIVER))
                 continue;
@@ -20340,11 +20350,7 @@ void Player::SaveInventoryAndGoldToDB(CharacterDatabaseTransaction trans)
 {
     _SaveInventory(trans);
     _SaveCurrency(trans);
-    SaveGoldToDB(trans);
-}
 
-void Player::SaveGoldToDB(CharacterDatabaseTransaction trans) const
-{
     CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPD_CHAR_MONEY);
     stmt->setUInt64(0, GetMoney());
     stmt->setUInt64(1, GetGUID().GetCounter());
@@ -21626,7 +21632,7 @@ void Player::RemovePetAura(PetAura const* petSpell)
         pet->RemoveAurasDueToSpell(petSpell->GetAura(pet->GetEntry()));
 }
 
-Creature* Player::GetSummonedBattlePet()
+Creature* Player::GetSummonedBattlePet() const
 {
     if (Creature* summonedBattlePet = ObjectAccessor::GetCreatureOrPetOrVehicle(*this, GetCritterGUID()))
         if (!GetSummonedBattlePetGUID().IsEmpty() && GetSummonedBattlePetGUID() == summonedBattlePet->GetBattlePetCompanionGUID())
@@ -25119,33 +25125,37 @@ bool Player::HasQuestForGO(int32 GOId) const
     return false;
 }
 
-void Player::UpdateVisibleGameobjectsOrSpellClicks()
+void Player::UpdateVisibleObjectInteractions(bool allUnits, bool onlySpellClicks, bool gameObjectQuestGiverStatus, bool questObjectiveGameObjects)
 {
-    if (m_clientGUIDs.empty())
-        return;
-
+    WorldPackets::Quest::QuestGiverStatusMultiple giverStatusMultiple;
     UpdateData udata(GetMapId());
-    WorldPacket packet;
-    for (auto itr = m_clientGUIDs.begin(); itr != m_clientGUIDs.end(); ++itr)
+    for (ObjectGuid visibleObjectGuid : m_clientGUIDs)
     {
-        if (itr->IsGameObject())
+        if (visibleObjectGuid.IsGameObject() && (gameObjectQuestGiverStatus || questObjectiveGameObjects))
         {
-            if (GameObject* obj = ObjectAccessor::GetGameObject(*this, *itr))
+            GameObject* gameObject = ObjectAccessor::GetGameObject(*this, visibleObjectGuid);
+            if (!gameObject)
+                continue;
+
+            if (gameObjectQuestGiverStatus && gameObject->GetGoType() == GAMEOBJECT_TYPE_QUESTGIVER)
+                giverStatusMultiple.QuestGiver.emplace_back(visibleObjectGuid, GetQuestDialogStatus(gameObject));
+
+            if (questObjectiveGameObjects)
             {
                 UF::ObjectData::Base objMask;
                 UF::GameObjectData::Base goMask;
 
-                if (m_questObjectiveStatus.find({ QUEST_OBJECTIVE_GAMEOBJECT, int32(obj->GetEntry()) }) != m_questObjectiveStatus.end())
+                if (m_questObjectiveStatus.contains({ QUEST_OBJECTIVE_GAMEOBJECT, int32(gameObject->GetEntry()) }))
                     objMask.MarkChanged(&UF::ObjectData::DynamicFlags);
 
-                switch (obj->GetGoType())
+                switch (gameObject->GetGoType())
                 {
                     case GAMEOBJECT_TYPE_QUESTGIVER:
                     case GAMEOBJECT_TYPE_CHEST:
                     case GAMEOBJECT_TYPE_GOOBER:
                     case GAMEOBJECT_TYPE_GENERIC:
                     case GAMEOBJECT_TYPE_GATHERING_NODE:
-                        if (sObjectMgr->IsGameObjectForQuests(obj->GetEntry()))
+                        if (sObjectMgr->IsGameObjectForQuests(gameObject->GetEntry()))
                             objMask.MarkChanged(&UF::ObjectData::DynamicFlags);
                         break;
                     default:
@@ -25153,35 +25163,62 @@ void Player::UpdateVisibleGameobjectsOrSpellClicks()
                 }
 
                 if (objMask.GetChangesMask().IsAnySet() || goMask.GetChangesMask().IsAnySet())
-                    obj->BuildValuesUpdateForPlayerWithMask(&udata, objMask.GetChangesMask(), goMask.GetChangesMask(), this);
+                    gameObject->BuildValuesUpdateForPlayerWithMask(&udata, objMask.GetChangesMask(), goMask.GetChangesMask(), this);
             }
         }
-        else if (itr->IsCreatureOrVehicle())
+        else if (visibleObjectGuid.IsCreatureOrVehicle() && (allUnits || onlySpellClicks))
         {
-            Creature* obj = ObjectAccessor::GetCreatureOrPetOrVehicle(*this, *itr);
-            if (!obj)
+            Creature* creature = ObjectAccessor::GetCreatureOrPetOrVehicle(*this, visibleObjectGuid);
+            if (!creature)
                 continue;
 
-            // check if this unit requires quest specific flags
-            if (!obj->HasNpcFlag(UNIT_NPC_FLAG_SPELLCLICK))
-                continue;
-
-            auto clickBounds = sObjectMgr->GetSpellClickInfoMapBounds(obj->GetEntry());
-            for (auto const& clickPair : clickBounds)
+            if (allUnits)
             {
-                if (sConditionMgr->HasConditionsForSpellClickEvent(obj->GetEntry(), clickPair.second.spellId))
+                UF::ObjectData::Base objMask;
+                UF::UnitData::Base unitMask;
+                for (uint32 i = 0; i < creature->m_unitData->NpcFlags.size(); ++i)
+                    if (creature->m_unitData->NpcFlags[i])
+                        unitMask.MarkChanged(&UF::UnitData::NpcFlags, i);
+
+                if (objMask.GetChangesMask().IsAnySet() || unitMask.GetChangesMask().IsAnySet())
+                    creature->BuildValuesUpdateForPlayerWithMask(&udata, objMask.GetChangesMask(), unitMask.GetChangesMask(), this);
+
+                if (creature->IsQuestGiver())
+                    giverStatusMultiple.QuestGiver.emplace_back(visibleObjectGuid, GetQuestDialogStatus(creature));
+            }
+            else if (onlySpellClicks)
+            {
+                // check if this unit requires quest specific flags
+                if (!creature->HasNpcFlag(UNIT_NPC_FLAG_SPELLCLICK))
+                    continue;
+
+                auto clickBounds = sObjectMgr->GetSpellClickInfoMapBounds(creature->GetEntry());
+                for (auto const& clickPair : clickBounds)
                 {
-                    UF::ObjectData::Base objMask;
-                    UF::UnitData::Base unitMask;
-                    unitMask.MarkChanged(&UF::UnitData::NpcFlags, 0); // NpcFlags[0] has UNIT_NPC_FLAG_SPELLCLICK
-                    obj->BuildValuesUpdateForPlayerWithMask(&udata, objMask.GetChangesMask(), unitMask.GetChangesMask(), this);
-                    break;
+                    if (sConditionMgr->HasConditionsForSpellClickEvent(creature->GetEntry(), clickPair.second.spellId))
+                    {
+                        UF::ObjectData::Base objMask;
+                        UF::UnitData::Base unitMask;
+                        unitMask.MarkChanged(&UF::UnitData::NpcFlags, 0); // NpcFlags[0] has UNIT_NPC_FLAG_SPELLCLICK
+                        creature->BuildValuesUpdateForPlayerWithMask(&udata, objMask.GetChangesMask(), unitMask.GetChangesMask(), this);
+                        break;
+                    }
                 }
             }
         }
     }
-    udata.BuildPacket(&packet);
-    SendDirectMessage(&packet);
+
+    // If as a result of npcflag updates we stop seeing UNIT_NPC_FLAG_QUESTGIVER then
+    // we must also send SMSG_QUEST_GIVER_STATUS_MULTIPLE because client will not request it automatically
+    if (!giverStatusMultiple.QuestGiver.empty())
+        SendDirectMessage(giverStatusMultiple.Write());
+
+    if (udata.HasData())
+    {
+        WorldPacket packet;
+        udata.BuildPacket(&packet);
+        SendDirectMessage(&packet);
+    }
 }
 
 bool Player::HasSummonPending() const
@@ -27085,9 +27122,71 @@ void Player::ResummonPetTemporaryUnSummonedIfAny()
     m_temporaryUnsummonedPetNumber = 0;
 }
 
+void Player::UnsummonBattlePetTemporaryIfAny(bool onFlyingMount /*= false*/)
+{
+    Creature* battlepet = GetSummonedBattlePet();
+    if (!battlepet || !battlepet->IsSummon())
+        return;
+
+    if (onFlyingMount && !battlepet->ToTempSummon()->IsDismissedOnFlyingMount())
+        return;
+
+    if (battlepet->ToTempSummon()->IsAutoResummoned())
+        m_temporaryUnsummonedBattlePet = battlepet->GetBattlePetCompanionGUID();
+
+    GetSession()->GetBattlePetMgr()->DismissPet();
+}
+
+void Player::ResummonBattlePetTemporaryUnSummonedIfAny()
+{
+    if (m_temporaryUnsummonedBattlePet.IsEmpty())
+        return;
+
+    // not resummon in not appropriate state
+    if (IsPetNeedBeTemporaryUnsummoned())
+        return;
+
+    GetSession()->GetBattlePetMgr()->SummonPet(m_temporaryUnsummonedBattlePet);
+
+    m_temporaryUnsummonedBattlePet.Clear();
+}
+
 bool Player::IsPetNeedBeTemporaryUnsummoned() const
 {
     return !IsInWorld() || !IsAlive() || HasUnitMovementFlag(MOVEMENTFLAG_FLYING) || HasExtraUnitMovementFlag2(MOVEMENTFLAG3_ADV_FLYING);
+}
+
+bool Player::CanSeeGossipOn(Creature const* creature) const
+{
+    if (creature->HasNpcFlag(UNIT_NPC_FLAG_GOSSIP))
+    {
+        if (GetGossipMenuForSource(creature))
+            return true;
+    }
+
+    // for cases with questgiver/ender without gossip menus
+    if (creature->HasNpcFlag(UNIT_NPC_FLAG_QUESTGIVER))
+    {
+        QuestRelationResult objectQIR = sObjectMgr->GetCreatureQuestInvolvedRelations(creature->GetEntry());
+        for (uint32 quest_id : objectQIR)
+        {
+            QuestStatus status = GetQuestStatus(quest_id);
+            if (status == QUEST_STATUS_COMPLETE || status == QUEST_STATUS_INCOMPLETE)
+                return true;
+        }
+
+        QuestRelationResult objectQR = sObjectMgr->GetCreatureQuestRelations(creature->GetEntry());
+        for (uint32 quest_id : objectQR)
+        {
+            Quest const* quest = sObjectMgr->GetQuestTemplate(quest_id);
+            if (!quest)
+                continue;
+
+            if (CanTakeQuest(quest, false))
+                return true;
+        }
+    }
+    return false;
 }
 
 bool Player::CanSeeSpellClickOn(Creature const* c) const

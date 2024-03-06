@@ -5349,8 +5349,8 @@ void Spell::TakeCastItem()
 
             int32 charges = m_CastItem->GetSpellCharges(itemEffect->LegacySlotIndex);
 
-            // item has charges left
-            if (charges)
+            // item has charges left for this slot
+            if (charges && itemEffect->SpellID == int32(m_spellInfo->Id))
             {
                 (charges > 0) ? --charges : ++charges;  // abs(charges) less at 1 after use
                 if (proto->GetMaxStackSize() == 1)
@@ -9331,7 +9331,7 @@ void SelectRandomInjuredTargets(std::list<WorldObject*>& targets, size_t maxTarg
         if (prioritizeGroupMembersOf && (!target->IsUnit() || target->ToUnit()->IsInRaidWith(prioritizeGroupMembersOf)))
             negativePoints |= 1 << NOT_GROUPED;
 
-        if (prioritizePlayers && !target->IsPlayer() && (!target->IsCreature() || !target->ToCreature()->HasFlag(CREATURE_STATIC_FLAG_4_TREAT_AS_RAID_UNIT_FOR_HELPFUL_SPELLS)))
+        if (prioritizePlayers && !target->IsPlayer() && (!target->IsCreature() || !target->ToCreature()->IsTreatedAsRaidUnit()))
             negativePoints |= 1 << NOT_PLAYER;
 
         if (!target->IsUnit() || target->ToUnit()->IsFullHealth())
