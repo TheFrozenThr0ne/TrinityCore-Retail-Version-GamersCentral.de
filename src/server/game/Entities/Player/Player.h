@@ -719,7 +719,6 @@ enum ChildEquipmentSlots
     CHILD_EQUIPMENT_SLOT_END     = 211,
 };
 
-// slots past 214 are guessed (unused in client)
 enum EquipableSpellSlots
 {
     EQUIPABLE_SPELL_OFFENSIVE_SLOT1 = 211,
@@ -1577,6 +1576,8 @@ class TC_GAME_API Player final : public Unit, public GridObject<Player>
         bool SatisfyQuestDependentBreadcrumbQuests(Quest const* qInfo, bool msg) const;
         bool SatisfyQuestClass(Quest const* qInfo, bool msg) const;
         bool SatisfyQuestRace(Quest const* qInfo, bool msg) const;
+        bool SatisfyQuestMinReputation(Quest const* qInfo, bool msg) const;
+        bool SatisfyQuestMaxReputation(Quest const* qInfo, bool msg) const;
         bool SatisfyQuestReputation(Quest const* qInfo, bool msg) const;
         bool SatisfyQuestStatus(Quest const* qInfo, bool msg) const;
         bool SatisfyQuestConditions(Quest const* qInfo, bool msg) const;
@@ -2515,7 +2516,7 @@ class TC_GAME_API Player final : public Unit, public GridObject<Player>
 
         bool IsVisibleGloballyFor(Player const* player) const;
 
-        void SendInitialVisiblePackets(Unit* target) const;
+        void SendInitialVisiblePackets(WorldObject* target) const;
         void OnPhaseChange() override;
         void UpdateObjectVisibility(bool forced = true) override;
         void UpdateVisibilityForPlayer();
@@ -2524,7 +2525,7 @@ class TC_GAME_API Player final : public Unit, public GridObject<Player>
         void UpdateTriggerVisibility();
 
         template<class T>
-        void UpdateVisibilityOf(T* target, UpdateData& data, std::set<Unit*>& visibleNow);
+        void UpdateVisibilityOf(T* target, UpdateData& data, std::set<WorldObject*>& visibleNow);
 
         std::array<uint8, MAX_MOVE_TYPE> m_forced_speed_changes;
         uint8 m_movementForceModMagnitudeChanges;
