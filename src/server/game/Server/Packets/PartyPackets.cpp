@@ -746,8 +746,9 @@ void WorldPackets::Party::SendPingUnit::Read()
 {
     _worldPacket >> SenderGUID;
     _worldPacket >> TargetGUID;
-    Type = _worldPacket.read<PingSubjectType, uint8>();
+    _worldPacket >> As<uint8>(Type);
     _worldPacket >> PinFrameID;
+    _worldPacket >> PingDuration;
 }
 
 WorldPacket const* WorldPackets::Party::ReceivePingUnit::Write()
@@ -756,6 +757,7 @@ WorldPacket const* WorldPackets::Party::ReceivePingUnit::Write()
     _worldPacket << TargetGUID;
     _worldPacket << uint8(Type);
     _worldPacket << uint32(PinFrameID);
+    _worldPacket << PingDuration;
 
     return &_worldPacket;
 }
@@ -768,6 +770,7 @@ void WorldPackets::Party::SendPingWorldPoint::Read()
     _worldPacket >> As<int32>(Type);
     _worldPacket >> PinFrameID;
     _worldPacket >> Transport;
+    _worldPacket >> PingDuration;
 }
 
 WorldPacket const* WorldPackets::Party::ReceivePingWorldPoint::Write()
@@ -776,8 +779,9 @@ WorldPacket const* WorldPackets::Party::ReceivePingWorldPoint::Write()
     _worldPacket << MapID;
     _worldPacket << Point;
     _worldPacket << uint8(Type);
-    _worldPacket << PinFrameID;
+    _worldPacket << uint32(PinFrameID);
     _worldPacket << Transport;
+    _worldPacket << PingDuration;
 
     return &_worldPacket;
 }
