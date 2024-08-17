@@ -368,11 +368,11 @@ ByteBuffer& operator<<(ByteBuffer& data, QuestGiverOfferReward const& offer)
     data << offer.Rewards; // QuestRewards
     data << int32(offer.Emotes.size());
     data << offer.QuestGiverGUID;
-    data << int32(offer.QuestGiverCreatureID);
-    data << int32(offer.QuestID);
     data << int32(offer.QuestFlags[0]); // Flags
     data << int32(offer.QuestFlags[1]); // FlagsEx
     data << int32(offer.QuestFlags[2]); // FlagsEx2
+    data << int32(offer.QuestGiverCreatureID);
+    data << int32(offer.QuestID);
     data << int32(offer.SuggestedPartyMembers);
     data << int32(offer.QuestInfoID);
     for (QuestDescEmote const& emote : offer.Emotes)
@@ -531,16 +531,16 @@ WorldPacket const* QuestGiverRequestItems::Write()
     _worldPacket << int32(Collect.size());
     _worldPacket << int32(Currency.size());
     _worldPacket << QuestGiverGUID;
+    _worldPacket << uint32(QuestFlags[0]);
+    _worldPacket << uint32(QuestFlags[1]);
+    _worldPacket << uint32(QuestFlags[2]);
+    _worldPacket << int32(StatusFlags);
     _worldPacket << int32(QuestGiverCreatureID);
     _worldPacket << int32(QuestID);
     _worldPacket << int32(CompEmoteDelay);
     _worldPacket << int32(CompEmoteType);
-    _worldPacket << uint32(QuestFlags[0]);
-    _worldPacket << uint32(QuestFlags[1]);
-    _worldPacket << uint32(QuestFlags[2]);
     _worldPacket << int32(SuggestPartyMembers);
     _worldPacket << int32(MoneyToGet);
-    _worldPacket << int32(StatusFlags);
     _worldPacket << int32(QuestInfoID);
 
     for (QuestObjectiveCollect const& obj : Collect)
