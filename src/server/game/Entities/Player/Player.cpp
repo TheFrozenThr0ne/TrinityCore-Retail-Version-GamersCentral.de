@@ -3061,7 +3061,8 @@ bool Player::AddSpell(uint32 spellId, bool active, bool learning, bool dependent
 
     if (traitDefinitionId)
         if (TraitDefinitionEntry const* traitDefinition = sTraitDefinitionStore.LookupEntry(*traitDefinitionId))
-            AddOverrideSpell(traitDefinition->OverridesSpellID, spellId);
+            if (traitDefinition->OverridesSpellID)
+                AddOverrideSpell(traitDefinition->OverridesSpellID, spellId);
 
     // update free primary prof.points (if any, can be none in case GM .learn prof. learning)
     if (uint32 freeProfs = GetFreePrimaryProfessionPoints())
@@ -3409,6 +3410,18 @@ void Player::RemoveSpell(uint32 spell_id, bool disabled /*= false*/, bool learn_
 
     for (SpellLearnSpellMap::const_iterator itr2 = spell_bounds.first; itr2 != spell_bounds.second; ++itr2)
     {
+        bool hasOtherSpellTeachingThis = std::ranges::any_of(sSpellMgr->GetSpellLearnedBySpellMapBounds(itr2->second.Spell), [&](SpellLearnSpellNode const* learnNode)
+        {
+            if (learnNode->SourceSpell == spell_id)
+                return false;
+            if (!learnNode->Active)
+                return false;
+            return HasSpell(learnNode->SourceSpell);
+        }, &SpellLearnedBySpellMap::value_type::second);
+
+        if (hasOtherSpellTeachingThis)
+            continue;
+
         RemoveSpell(itr2->second.Spell, disabled);
         if (itr2->second.OverridesSpell)
             RemoveOverrideSpell(itr2->second.OverridesSpell, itr2->second.Spell);
@@ -28654,8 +28667,7 @@ void Player::ApplyTraitEntryChanges(int32 editedConfigId, WorldPackets::Traits::
     if (consumeCurrencies)
     {
         std::map<int32, int32> currencies;
-        for (WorldPackets::Traits::TraitEntry const& costEntry : costEntries)
-            TraitMgr::FillSpentCurrenciesMap(costEntry, currencies);
+        TraitMgr::FillSpentCurrenciesMap(costEntries, currencies);
 
         for (auto [traitCurrencyId, amount] : currencies)
         {
