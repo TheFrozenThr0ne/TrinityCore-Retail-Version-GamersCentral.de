@@ -1,0 +1,182 @@
+/*
+
+# creature_template
+
+insert  into `creature_template`(`entry`,`KillCredit1`,`KillCredit2`,`name`,`femaleName`,`subname`,`TitleAlt`,`IconName`,`RequiredExpansion`,`VignetteID`,`faction`,`npcflag`,`speed_walk`,`speed_run`,`scale`,`Classification`,`dmgschool`,`BaseAttackTime`,`RangeAttackTime`,`BaseVariance`,`RangeVariance`,`unit_class`,`unit_flags`,`unit_flags2`,`unit_flags3`,`family`,`trainer_class`,`type`,`VehicleId`,`AIName`,`MovementType`,`ExperienceModifier`,`RacialLeader`,`movementId`,`WidgetSetID`,`WidgetSetUnitConditionID`,`RegenHealth`,`CreatureImmunitiesId`,`flags_extra`,`ScriptName`,`StringId`,`VerifiedBuild`) values
+(500006,0,0,'Helper',NULL,'Skip Exile\'s Reach',NULL,NULL,0,0,35,1,1,1.14286,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,'SmartAI',0,1,0,0,0,0,1,0,0,'SkipExilesReachNPC',NULL,56110);
+
+
+# creature_template_model
+
+insert  into `creature_template_model`(`CreatureID`,`Idx`,`CreatureDisplayID`,`DisplayScale`,`Probability`,`VerifiedBuild`) values
+(500006,0,30414,1,1,56110);
+
+
+# creature_template_gossip
+
+insert  into `creature_template_gossip`(`CreatureID`,`MenuID`,`VerifiedBuild`) values
+(500006,600000,0);
+
+
+# gossip_menu
+
+insert  into `gossip_menu`(`MenuID`,`TextID`,`VerifiedBuild`) values
+(600000,68,0);
+
+*/
+
+#include "Define.h"
+#include "ScriptMgr.h"
+#include "SharedDefines.h"
+#include "Unit.h"
+#include "Pet.h"
+#include "Player.h"
+#include "ScriptPCH.h"
+#include "ScriptedGossip.h"
+#include "GossipDef.h"
+#include "World.h"
+#include "WorldPacket.h"
+#include "WorldSession.h"
+#include "Chat.h"
+#include "Config.h"
+
+class SkipExilesReachAnnounce : public PlayerScript
+{
+
+public:
+
+    SkipExilesReachAnnounce() : PlayerScript("SkipExilesReachAnnounce") {}
+
+    void OnLogin(Player* player, bool /*firstLogin*/)
+    {
+            // Announce Module
+            if (sConfigMgr->GetBoolDefault("SkipExilesReachNPC.Announce", true))
+            {
+                ChatHandler(player->GetSession()).SendSysMessage("This server is running |cff4CFF00Skip Exile's Reach - Starting - NPC");
+            }
+    }
+};
+
+class SkipExilesReachNPC : public CreatureScript
+{
+
+public:
+
+    SkipExilesReachNPC() : CreatureScript("SkipExilesReachNPC") { }
+
+    // Passive Emotes
+    struct SkipExilesReachNPCAI : public ScriptedAI
+    {
+        SkipExilesReachNPCAI(Creature* creature) : ScriptedAI(creature) { }
+
+        bool OnGossipHello(Player* player) override
+        {
+            switch (player->GetTeamId())
+            {
+            case TEAM_ALLIANCE:
+                AddGossipItemFor(player, GossipOptionNpc::None, "Teleport me to Stormwind!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+                break;
+            case TEAM_HORDE:
+                AddGossipItemFor(player, GossipOptionNpc::None, "Teleport me to Orgrimmar!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+                break;
+            default:
+                break;
+            }
+
+            if (player->GetLevel() == 4)
+            {
+                AddGossipItemFor(player, GossipOptionNpc::None, "Set Character to Level 10!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+            }
+
+            SendGossipMenuFor(player, 606000, me->GetGUID());
+            return true;
+        }
+
+        bool OnGossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
+        {
+            uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            ClearGossipMenuFor(player);
+
+            if (CLASS_DRUID) {
+                player->LearnSpell(783, true);
+            }
+
+            if (CLASS_HUNTER)
+            {
+                player->LearnSpell(83242, true);
+            }
+
+            if (CLASS_MAGE)
+            {
+                player->LearnSpell(118, true);
+            }
+
+            if (CLASS_MONK)
+            {
+                player->LearnSpell(322109, true);
+            }
+
+            if (CLASS_PALADIN)
+            {
+                player->LearnSpell(642, true);
+            }
+
+            if (CLASS_PRIEST)
+            {
+                player->LearnSpell(2006, true);
+            }
+
+            if (CLASS_ROGUE)
+            {
+                player->LearnSpell(315584, true);
+            }
+
+            if (CLASS_SHAMAN)
+            {
+                player->LearnSpell(2645, true);
+            }
+
+            if (CLASS_WARLOCK)
+            {
+                player->LearnSpell(697, true);
+            }
+
+            if (CLASS_WARRIOR)
+            {
+                player->LearnSpell(163201, true);
+            }
+
+            player->ModifyMoney(25000, true);
+
+            switch (action)
+            {
+            case 1001:
+                player->TeleportTo(0, -8833.070312f, 622.778015f, 93.931702f, 0.677100f);
+                break;
+            case 1002:
+                player->TeleportTo(1, 1570.931641f, -4396.939453f, 16.000856f, 0.452704f);
+                break;
+            case 1003:
+                player->SetLevel(10, true);
+                break;
+            default:
+                break;
+            }
+            // Goodbye
+            CloseGossipMenuFor(player);
+            return true;
+        }
+    };
+
+    // CREATURE AI
+    CreatureAI* GetAI(Creature* creature) const override
+    {
+        return new SkipExilesReachNPCAI(creature);
+    }
+};
+
+void AddSC_SkipExilesReachNPCScripts()
+{
+    new SkipExilesReachAnnounce();
+    new SkipExilesReachNPC();
+}
