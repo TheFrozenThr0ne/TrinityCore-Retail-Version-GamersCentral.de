@@ -23,13 +23,3 @@ nbproject/*
 cmake-build-*/*
 .vs
 *.user
-/src/server/scripts/Custom/dynamicxp.cpp
-/src/server/scripts/Custom/learnriding.cpp
-/src/server/scripts/Custom/Lfg_Solo.cpp
-/src/server/scripts/Custom/mod_customserver.cpp
-/src/server/scripts/Custom/reward_system.cpp
-/src/server/scripts/Custom/ServerAutoShutdown.cpp
-/src/server/scripts/Custom/ServerAutoShutdown.h
-/src/server/scripts/Custom/ServerAutoShutdown_SC.cpp
-/src/server/scripts/Custom/Solocraft.cpp
-/src/server/scripts/Custom/custom_script_loader.cpp
