@@ -30,11 +30,11 @@
 INSERT INTO creature_template (entry, KillCredit1, KillCredit2, name, femaleName, subname, TitleAlt, IconName, RequiredExpansion, VignetteID, faction, npcflag, speed_walk, speed_run, scale, Classification, dmgschool, BaseAttackTime, RangeAttackTime, BaseVariance, RangeVariance, unit_class, unit_flags, unit_flags2, unit_flags3, family, trainer_class, type, VehicleId, AIName, MovementType, ExperienceModifier, RacialLeader, movementId, WidgetSetID, WidgetSetUnitConditionID, RegenHealth, CreatureImmunitiesId, flags_extra, ScriptName, StringId, VerifiedBuild)
 VALUES (555555, 0, 0, 'Eventstarter', NULL, 'Fall Event', NULL, NULL, 0, 0, 35, 1, 1, 1.14286, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'SmartAI', 0, 1, 0, 0, 0, 0, 1, 0, 0, 'Eventstarter', NULL, 0);
 
-# creature_template_model
+# Define a creature model to assing it to the NPC
 insert  into creature_template_model(CreatureID,Idx,CreatureDisplayID,DisplayScale,Probability,VerifiedBuild) values
 (500010,0,7337,1,1,0);
 
-# creature_template_gossip
+# Define a gossip template to assing it to the NPC
 insert  into creature_template_gossip(CreatureID,MenuID,VerifiedBuild) values
 (500010,600000,0);
 
@@ -51,24 +51,24 @@ INSERT INTO gameobject (guid, id, map, zoneId, areaId, spawnDifficulties, phaseU
 VALUES
 (9805103, 555555, 1, 0, 0, '0', 0, 0, 0, -1, -6082.18, -3962.04, 9.8267, 0.446274, -0, -0, -0.22129, -0.975208, 300, 255, 1, '', NULL, 0);
 
-# gameobject
+# Define gameobject spawns for the objects
 insert  into gameobject(guid,id,map,zoneId,areaId,spawnDifficulties,phaseUseFlags,PhaseId,PhaseGroup,terrainSwapMap,position_x,position_y,position_z,orientation,rotation0,rotation1,rotation2,rotation3,spawntimesecs,animprogress,state,ScriptName,StringId,VerifiedBuild) values
-(9805103,555555,1,0,0,'0',0,0,0,-1,-6082.18,-3962.04,9.8267,0.446274,-0,-0,-0.22129,-0.975208,300,255,1,'',NULL,0),
-(9805104,555555,1,0,0,'0',0,0,0,-1,-6077.57,-3971.61,9.64355,0.446795,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
-(9805105,555555,1,0,0,'0',0,0,0,-1,-6072.97,-3981.13,9.46484,0.432934,-0,-0,-0.214781,-0.976662,300,255,1,'',NULL,0),
-(9805106,555555,1,0,0,'0',0,0,0,-1,-6068.48,-3990.79,9.41696,0.446801,-0,-0,-0.221547,-0.97515,300,255,1,'',NULL,0),
-(9805107,555555,1,0,0,'0',0,0,0,-1,-6071.25,-3957,9.76294,0.427199,-0,-0,-0.211979,-0.977274,300,255,1,'',NULL,0),
-(9805108,555555,1,0,0,'0',0,0,0,-1,-6066.67,-3966.22,9.9439,0.423437,-0,-0,-0.21014,-0.977671,300,255,1,'',NULL,0),
-(9805109,555555,1,0,0,'0',0,0,0,-1,-6062.08,-3976.09,9.68955,0.435565,-0,-0,-0.216065,-0.976379,300,255,1,'',NULL,0),
-(9805110,555555,1,0,0,'0',0,0,0,-1,-6057.46,-3985.86,9.72708,0.423774,-0,-0,-0.210305,-0.977636,300,255,1,'',NULL,0),
-(9805111,555555,1,0,0,'0',0,0,0,-1,-6060.29,-3951.8,10.0642,3.53371,-0,-0,-0.980842,0.194806,300,255,1,'',NULL,0),
-(9805112,555555,1,0,0,'0',0,0,0,-1,-6055.66,-3961.45,10.3675,0.396871,-0,-0,-0.197136,-0.980376,300,255,1,'',NULL,0),
-(9805113,555555,1,0,0,'0',0,0,0,-1,-6050.95,-3971.2,9.9129,3.5365,-0,-0,-0.980569,0.196175,300,255,1,'',NULL,0),
-(9805114,555555,1,0,0,'0',0,0,0,-1,-6046.38,-3980.84,10.0047,0.423919,-0,-0,-0.210376,-0.977621,300,255,1,'',NULL,0),
-(9805115,555555,1,0,0,'0',0,0,0,-1,-6093.07,-3967.4,10.0335,3.58541,-0,-0,-0.97548,0.22009,300,255,1,'',NULL,0),
-(9805116,555555,1,0,0,'0',0,0,0,-1,-6088.43,-3976.92,9.83739,3.58227,-0,-0,-0.975824,0.218558,300,255,1,'',NULL,0),
-(9805117,555555,1,0,0,'0',0,0,0,-1,-6083.95,-3986.58,9.61485,0.4385,-0,-0,-0.217498,-0.976061,300,255,1,'',NULL,0),
-(9805118,555555,1,0,0,'0',0,0,0,-1,-6079.4,-3996.06,9.55618,3.59191,-0,-0,-0.974759,0.22326,300,255,1,'',NULL,0);
+(9805103,555555,1,0,0,'0',0,0,0,-1,-6082.18,-3962.04,9.8000,0.446274,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805104,555555,1,0,0,'0',0,0,0,-1,-6077.57,-3971.61,9.8000,0.446795,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805105,555555,1,0,0,'0',0,0,0,-1,-6072.97,-3981.13,9.8000,0.432934,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805106,555555,1,0,0,'0',0,0,0,-1,-6068.48,-3990.79,9.8000,0.446801,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805107,555555,1,0,0,'0',0,0,0,-1,-6071.25,-3957,9.8000,0.427199,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805108,555555,1,0,0,'0',0,0,0,-1,-6066.67,-3966.22,9.8000,0.423437,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805109,555555,1,0,0,'0',0,0,0,-1,-6062.08,-3976.09,9.8000,0.435565,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805110,555555,1,0,0,'0',0,0,0,-1,-6057.46,-3985.86,9.8000,0.423774,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805111,555555,1,0,0,'0',0,0,0,-1,-6060.29,-3951.8,9.8000,3.53371,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805112,555555,1,0,0,'0',0,0,0,-1,-6055.66,-3961.45,9.8000,0.396871,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805113,555555,1,0,0,'0',0,0,0,-1,-6050.95,-3971.2,9.8000,3.5365,-0,-0,-0.2215449,-0.97515,300,255,1,'',NULL,0),
+(9805114,555555,1,0,0,'0',0,0,0,-1,-6046.38,-3980.84,9.8000,0.423919,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805115,555555,1,0,0,'0',0,0,0,-1,-6093.07,-3967.4,9.8000,3.58541,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805116,555555,1,0,0,'0',0,0,0,-1,-6088.43,-3976.92,9.8000,3.58227,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805117,555555,1,0,0,'0',0,0,0,-1,-6083.95,-3986.58,9.8000,0.4385,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
+(9805118,555555,1,0,0,'0',0,0,0,-1,-6079.4,-3996.06,9.8000,3.59191,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0);
 */
 
 /* // Condig Statements for worldserver.conf Configuration
@@ -80,23 +80,10 @@ FallEvent.Announce = true
 #include "ScriptedCreature.h"
 #include "ObjectMgr.h"
 #include "UnitAI.h"
-#include "GameObjectAI.h"
-#include "Map.h"
-#include "Random.h"
-#include "Chat.h"
-#include "Config.h"
-#include "PhasingHandler.h"
 #include "ObjectGuid.h"
+#include "GameObjectAI.h"
 #include "GameObject.h"
 #include "GameObjectInfo.h"
-#include "ObjectAccessor.h"
-#include <algorithm>
-#include <numeric>
-#include <atomic>
-#include <random>
-#include <MapManager.h>
-#include <unordered_set>
-#include <ctime>
 
 // Constants
 constexpr int TotalObjects = 16;
@@ -109,6 +96,7 @@ constexpr uint32 FinalEventDelay = 160000; // 160 seconds
 
 // Initialize the event flag to false
 std::atomic<bool> endevent{ true };
+std::atomic<bool> objectsRecreated{ false };
 std::map<ObjectGuid, GameObjectInfo> DespawnedObjectMap;
 
 // Class to announce the Fall Event to players when they log in
@@ -142,6 +130,10 @@ public:
             if (endevent)
             {
                 me->PlayDirectMusic(0);
+            }
+
+            if (objectsRecreated)
+            {
                 me->SetVisible(true);
             }
         }
@@ -164,6 +156,7 @@ public:
             {
                 TC_LOG_INFO("scripts", "Player %s has started the Fall Event.", player->GetName().c_str());
                 endevent = false; // Start the event
+                objectsRecreated = false; // Start the event
                 StartEvent(player); // Start the event sequence
             }
 
@@ -286,6 +279,7 @@ public:
                 }
             }
 
+            objectsRecreated = true;
             DespawnedObjectMap.clear();
         }
 
@@ -313,10 +307,7 @@ public:
             case EVENT_ACTIVATE:
                 AddDespawnedObject(me);  // Objekt zur Despawn-Liste hinzufügen.
                 me->PlayDirectSound(ObjectSoundID);  // Ton für das Objekt abspielen.
-                //me->RemoveFromWorld();  // Objekt aus der Welt entfernen.
                 me->DespawnOrUnsummon();
-                //PhasingHandler::AddPhase(go, 173, true); // Add the object back to the default phase
-                //go->UpdateObjectVisibility(true);
                 TC_LOG_ERROR("scripts", "FallObject with GUID {} has been despawned.", me->GetGUID());
                 break;
             case EVENT_END:
