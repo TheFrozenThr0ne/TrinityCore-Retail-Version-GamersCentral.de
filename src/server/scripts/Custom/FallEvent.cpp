@@ -1,38 +1,58 @@
+/*******************************************
+* File: FallEventScript.cpp
+* Author: TheFrozenThr0ne & CC
+* Description: Manages the custom Fall Event
+*              in the game including NPCs,
+*              objects, and event scripts.
+********************************************/
+
+#include "ScriptMgr.h"
+#include "ScriptedCreature.h"
+#include "ObjectMgr.h"
+#include "UnitAI.h"
+#include "GameObjectAI.h"
+#include "Map.h"
+#include "Random.h"
+#include "Chat.h"
+#include "Config.h"
+#include "PhasingHandler.h"
+#include <algorithm>
+#include <numeric>
+#include <atomic>
+#include <random>
+#include <MapManager.h>
+#include <unordered_set>
+#include <ctime>
+
+// SQL Statements for Database Configuration
 /*
-
-# creature_template
-
-insert  into `creature_template`(`entry`,`KillCredit1`,`KillCredit2`,`name`,`femaleName`,`subname`,`TitleAlt`,`IconName`,`RequiredExpansion`,`VignetteID`,`faction`,`npcflag`,`speed_walk`,`speed_run`,`scale`,`Classification`,`dmgschool`,`BaseAttackTime`,`RangeAttackTime`,`BaseVariance`,`RangeVariance`,`unit_class`,`unit_flags`,`unit_flags2`,`unit_flags3`,`family`,`trainer_class`,`type`,`VehicleId`,`AIName`,`MovementType`,`ExperienceModifier`,`RacialLeader`,`movementId`,`WidgetSetID`,`WidgetSetUnitConditionID`,`RegenHealth`,`CreatureImmunitiesId`,`flags_extra`,`ScriptName`,`StringId`,`VerifiedBuild`) values
-(555555,0,0,'Eventstarter',NULL,'Fall Event',NULL,NULL,0,0,35,1,1,1.14286,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,'SmartAI',0,1,0,0,0,0,1,0,0,'Eventstarter',NULL,0);
-
+# Insert creature template for the "Eventstarter" NPC
+INSERT INTO creature_template (entry, KillCredit1, KillCredit2, name, femaleName, subname, TitleAlt, IconName, RequiredExpansion, VignetteID, faction, npcflag, speed_walk, speed_run, scale, Classification, dmgschool, BaseAttackTime, RangeAttackTime, BaseVariance, RangeVariance, unit_class, unit_flags, unit_flags2, unit_flags3, family, trainer_class, type, VehicleId, AIName, MovementType, ExperienceModifier, RacialLeader, movementId, WidgetSetID, WidgetSetUnitConditionID, RegenHealth, CreatureImmunitiesId, flags_extra, ScriptName, StringId, VerifiedBuild)
+VALUES (555555, 0, 0, 'Eventstarter', NULL, 'Fall Event', NULL, NULL, 0, 0, 35, 1, 1, 1.14286, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 'SmartAI', 0, 1, 0, 0, 0, 0, 1, 0, 0, 'Eventstarter', NULL, 0);
 
 # creature_template_model
-
-insert  into `creature_template_model`(`CreatureID`,`Idx`,`CreatureDisplayID`,`DisplayScale`,`Probability`,`VerifiedBuild`) values
+insert  into creature_template_model(CreatureID,Idx,CreatureDisplayID,DisplayScale,Probability,VerifiedBuild) values
 (500010,0,7337,1,1,0);
 
-
 # creature_template_gossip
-
-insert  into `creature_template_gossip`(`CreatureID`,`MenuID`,`VerifiedBuild`) values
+insert  into creature_template_gossip(CreatureID,MenuID,VerifiedBuild) values
 (500010,600000,0);
 
+# Define a gossip menu and assign it to the NPC
+INSERT INTO gossip_menu (MenuID, TextID, VerifiedBuild)
+VALUES (600000, 68, 0);
 
-# gossip_menu
+# Define gameobject templates for the event objects
+INSERT INTO gameobject_template (entry, type, displayId, name, IconName, castBarCaption, unk1, size, Data0, Data1, Data2, Data3, Data4, Data5, Data6, Data7, Data8, Data9, Data10, Data11, Data12, Data13, Data14, Data15, Data16, Data17, Data18, Data19, Data20, Data21, Data22, Data23, Data24, Data25, Data26, Data27, Data28, Data29, Data30, Data31, Data32, Data33, Data34, ContentTuningId, AIName, ScriptName, StringId, VerifiedBuild)
+VALUES (555555, 5, 8277, 'FallEvent_object01', '', '', '', 0.4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', 'FallObject', NULL, 0);
 
-insert  into `gossip_menu`(`MenuID`,`TextID`,`VerifiedBuild`) values
-(600000,68,0);
-
-
-# gameobject_template
-
-insert  into `gameobject_template`(`entry`,`type`,`displayId`,`name`,`IconName`,`castBarCaption`,`unk1`,`size`,`Data0`,`Data1`,`Data2`,`Data3`,`Data4`,`Data5`,`Data6`,`Data7`,`Data8`,`Data9`,`Data10`,`Data11`,`Data12`,`Data13`,`Data14`,`Data15`,`Data16`,`Data17`,`Data18`,`Data19`,`Data20`,`Data21`,`Data22`,`Data23`,`Data24`,`Data25`,`Data26`,`Data27`,`Data28`,`Data29`,`Data30`,`Data31`,`Data32`,`Data33`,`Data34`,`ContentTuningId`,`AIName`,`ScriptName`,`StringId`,`VerifiedBuild`) values
-(555555,5,8277,'FallEvent_object01','','','',0.4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'','FallObject',NULL,0);
-
+# Define spawn points for the game objects
+INSERT INTO gameobject (guid, id, map, zoneId, areaId, spawnDifficulties, phaseUseFlags, PhaseId, PhaseGroup, terrainSwapMap, position_x, position_y, position_z, orientation, rotation0, rotation1, rotation2, rotation3, spawntimesecs, animprogress, state, ScriptName, StringId, VerifiedBuild)
+VALUES
+(9805103, 555555, 1, 0, 0, '0', 0, 0, 0, -1, -6082.18, -3962.04, 9.8267, 0.446274, -0, -0, -0.22129, -0.975208, 300, 255, 1, '', NULL, 0);
 
 # gameobject
-
-insert  into `gameobject`(`guid`,`id`,`map`,`zoneId`,`areaId`,`spawnDifficulties`,`phaseUseFlags`,`PhaseId`,`PhaseGroup`,`terrainSwapMap`,`position_x`,`position_y`,`position_z`,`orientation`,`rotation0`,`rotation1`,`rotation2`,`rotation3`,`spawntimesecs`,`animprogress`,`state`,`ScriptName`,`StringId`,`VerifiedBuild`) values
+insert  into gameobject(guid,id,map,zoneId,areaId,spawnDifficulties,phaseUseFlags,PhaseId,PhaseGroup,terrainSwapMap,position_x,position_y,position_z,orientation,rotation0,rotation1,rotation2,rotation3,spawntimesecs,animprogress,state,ScriptName,StringId,VerifiedBuild) values
 (9805103,555555,1,0,0,'0',0,0,0,-1,-6082.18,-3962.04,9.8267,0.446274,-0,-0,-0.22129,-0.975208,300,255,1,'',NULL,0),
 (9805104,555555,1,0,0,'0',0,0,0,-1,-6077.57,-3971.61,9.64355,0.446795,-0,-0,-0.221544,-0.97515,300,255,1,'',NULL,0),
 (9805105,555555,1,0,0,'0',0,0,0,-1,-6072.97,-3981.13,9.46484,0.432934,-0,-0,-0.214781,-0.976662,300,255,1,'',NULL,0),
@@ -49,24 +69,69 @@ insert  into `gameobject`(`guid`,`id`,`map`,`zoneId`,`areaId`,`spawnDifficulties
 (9805116,555555,1,0,0,'0',0,0,0,-1,-6088.43,-3976.92,9.83739,3.58227,-0,-0,-0.975824,0.218558,300,255,1,'',NULL,0),
 (9805117,555555,1,0,0,'0',0,0,0,-1,-6083.95,-3986.58,9.61485,0.4385,-0,-0,-0.217498,-0.976061,300,255,1,'',NULL,0),
 (9805118,555555,1,0,0,'0',0,0,0,-1,-6079.4,-3996.06,9.55618,3.59191,-0,-0,-0.974759,0.22326,300,255,1,'',NULL,0);
-
 */
 
+/* // Condig Statements for worldserver.conf Configuration
+FallEvent.Announce = true
+*/
+
+// Global class for managing the Fall Event
+#include "ScriptMgr.h"
 #include "ScriptedCreature.h"
+#include "ObjectMgr.h"
+#include "UnitAI.h"
 #include "GameObjectAI.h"
-#include "ObjectAccessor.h"
-#include "PhasingHandler.h"
-#include "Player.h"
-#include "EventMap.h"
+#include "Map.h"
+#include "Random.h"
 #include "Chat.h"
+#include "Config.h"
+#include "PhasingHandler.h"
+#include "ObjectGuid.h"
+#include "GameObject.h"
+#include "GameObjectInfo.h"
+#include "ObjectAccessor.h"
+#include <algorithm>
+#include <numeric>
+#include <atomic>
+#include <random>
+#include <MapManager.h>
+#include <unordered_set>
+#include <ctime>
 
-bool endevent = false;
-GuidList Eggs;
+// Constants
+constexpr int TotalObjects = 16;
+constexpr uint32 StartEventSound = 16037;
+constexpr uint32 PlayerMusicID = 17289;
+constexpr uint32 ObjectSoundID = 17442;
+constexpr uint32 EventStarterGossipMenuID = 68;
+constexpr uint32 InitialEventDelay = 15000; // 15 seconds
+constexpr uint32 FinalEventDelay = 160000; // 160 seconds
 
+// Initialize the event flag to false
+std::atomic<bool> endevent{ true };
+std::map<ObjectGuid, GameObjectInfo> DespawnedObjectMap;
+
+// Class to announce the Fall Event to players when they log in
+class FallEventAnnounce : public PlayerScript
+{
+public:
+    FallEventAnnounce() : PlayerScript("FallEventAnnounce") {}
+
+    // Method called when a player logs in
+    void OnLogin(Player* player, bool /*firstLogin*/) override
+    {
+        if (sConfigMgr->GetBoolDefault("FallEvent.Announce", true))
+        {
+            ChatHandler(player->GetSession()).SendSysMessage("This server is running |cff4CFF00Fall Event - Speedbarge - (Thousand Needles)");
+        }
+    }
+};
+
+// Creature script for the NPC "Eventstarter" which starts the Fall Event
 class Eventstarter : public CreatureScript
 {
 public:
-    Eventstarter() : CreatureScript("Eventstarter") { }
+    Eventstarter() : CreatureScript("Eventstarter") {}
 
     struct EventstarterAI : public ScriptedAI
     {
@@ -76,77 +141,71 @@ public:
         {
             if (endevent)
             {
-                TC_LOG_ERROR("scripts", "Event has ended.");
-                endevent = false;
+                me->PlayDirectMusic(0);
+                me->SetVisible(true);
             }
         }
 
         bool OnGossipHello(Player* player) override
         {
-            TC_LOG_ERROR("scripts", "Player {} greeted Eventstarter.", player->GetName());
-
-            AddGossipItemFor(player, GossipOptionNpc::None, "Start Event !!!", GOSSIP_SENDER_MAIN, 1);
-            SendGossipMenuFor(player, 1, me->GetGUID());
+            AddGossipItemFor(player, GossipOptionNpc::None, "Start Fall Event!", GOSSIP_SENDER_MAIN, 1);
+            SendGossipMenuFor(player, EventStarterGossipMenuID, me->GetGUID());
             return true;
         }
 
         bool OnGossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
         {
-            uint32 const uiAction = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            if (!player)
+                return false;
 
-            if (uiAction == 1)
+            uint32 action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+
+            if (action == 1 && endevent) // Player selected to start the event
             {
-                TC_LOG_ERROR("scripts", "Player {} selected to start the event.", player->GetName());
-                StartEvent(player);  // Start the event when selected by the player
-            }
-            else
-            {
-                TC_LOG_ERROR("scripts", "Unknown action {} selected by player {}.", uiAction, player->GetName());
+                TC_LOG_INFO("scripts", "Player %s has started the Fall Event.", player->GetName().c_str());
+                endevent = false; // Start the event
+                StartEvent(player); // Start the event sequence
             }
 
             CloseGossipMenuFor(player);
             return true;
         }
 
-        void StartEvent(Player* player)
-        {
-            TC_LOG_ERROR("scripts", "Starting event for player {}.", player->GetName());
-            endevent = false;
-
-            int FallObjectGuids[16] = { 9805103, 9805104, 9805105, 9805106, 9805107, 9805108, 9805109, 9805110, 9805111, 9805112, 9805113, 9805114, 9805115, 9805116, 9805117, 9805118 };
-            int RandomData[16] = {};
-            GameObject* FallObjects[16] = {};
-
-            // Generate a random order for objects
-            for (int i = 0; i < 16; i++)
+        private:
+            void StartEvent(Player * player)
             {
-                RandomData[i] = irand(0, 15);
-                for (int j = 0; j < i; j++)
+                me->PlayDirectSound(StartEventSound); // NPC plays a sound
+                player->PlayDirectMusic(PlayerMusicID); // Player hears event music
+                me->SetVisible(false); // Hide the NPC
+
+                // Fall object GUIDs
+                constexpr int FallObjectGuid[TotalObjects] = { 9805103, 9805104, 9805105, 9805106, 9805107, 9805108, 9805109,
+                                                               9805110, 9805111, 9805112, 9805113, 9805114, 9805115, 9805116,
+                                                               9805117, 9805118 };
+
+                // Shuffle the object indices
+                int RandomData[TotalObjects] = {};
+                std::iota(RandomData, RandomData + TotalObjects, 0);
+                std::shuffle(RandomData, RandomData + TotalObjects, std::default_random_engine(static_cast<unsigned>(std::time(nullptr))));
+
+                // Initialize fall objects
+                GameObject* FallObjects[TotalObjects] = {};
+                for (int i = 0; i < TotalObjects; ++i)
                 {
-                    if (RandomData[i] == RandomData[j])
+                    TC_LOG_INFO("scripts", "Initialized FallObject with GUID {} for event.", FallObjectGuid[RandomData[i]]);
+                    FallObjects[i] = ChatHandler(player->GetSession()).GetObjectFromPlayerMapByDbGuid(FallObjectGuid[RandomData[i]]);
+                    if (FallObjects[i])
                     {
-                        i--;  // Regenerate if duplicate found
-                        break;
+                        FallObjects[i]->AI()->SetData(1, i + 1); // Set object data
+                    }
+                    else
+                    {
+                        TC_LOG_ERROR("scripts", "FallObject with GUID {} not found.", FallObjectGuid[RandomData[i]]);
+                        ChatHandler(player->GetSession()).PSendSysMessage("Object {} not found", FallObjectGuid[RandomData[i]]);
                     }
                 }
             }
-
-            // Set the phases for the randomly selected objects
-            for (int i = 0; i < 16; i++)
-            {
-                FallObjects[i] = ChatHandler(player->GetSession()).GetObjectFromPlayerMapByDbGuid(FallObjectGuids[RandomData[i]]);
-                if (FallObjects[i])
-                {
-                    TC_LOG_INFO("scripts", "Setting data for FallObject with GUID {}.", FallObjectGuids[RandomData[i]]);
-                    FallObjects[i]->AI()->SetData(1, i + 1);  // Setting data to trigger the object event
-                }
-                else
-                {
-                    TC_LOG_ERROR("scripts", "FallObject with GUID {} not found.", FallObjectGuids[RandomData[i]]);
-                }
-            }
-        }
-    };
+        };
 
     CreatureAI* GetAI(Creature* creature) const override
     {
@@ -154,6 +213,7 @@ public:
     }
 };
 
+// Script for handling Fall Event objects
 class FallObject : public GameObjectScript
 {
 public:
@@ -167,25 +227,8 @@ public:
         {
             if (type == 1)
             {
-                if (data >= 1 && data <= 15)
-                {
-                    uint32 timer = 1500 + (data - 1) * 1000;
-                    Events.ScheduleEvent(1, Milliseconds(timer));
-                    TC_LOG_ERROR("scripts", "Scheduled despawn event for FallObject with GUID {} in {} ms.", me->GetGUID(), timer);
-                }
-                else if (data == 16)
-                {
-                    Events.ScheduleEvent(2, Milliseconds(16000));  // Respawn in 150000 ms (150 seconds)
-                    TC_LOG_ERROR("scripts", "Scheduled respawn event for FallObject with GUID {} in 150000 ms.", me->GetGUID());
-                }
-                else
-                {
-                    TC_LOG_ERROR("scripts", "Invalid data value {} for FallObject with GUID {}.", data, me->GetGUID());
-                }
-            }
-            else
-            {
-                TC_LOG_ERROR("scripts", "Invalid type value {} for FallObject with GUID {}.", type, me->GetGUID());
+                TC_LOG_INFO("scripts", "Scheduled event for FallObject {} with data {}.", me->GetGUID().GetCounter(), data);
+                ScheduleEvents(data);
             }
         }
 
@@ -195,109 +238,96 @@ public:
 
             while (uint32 eventId = Events.ExecuteEvent())
             {
-                switch (eventId)
-                {
-                case 1:
-                    HandleDespawn();  // Handle the despawn event
-                    break;
-                case 2:
-                    HandleRespawn();  // Handle the respawn event
-                    RespawnAllFallObjects();  // Respawn all objects when the event ends
-                    break;
-                default:
-                    TC_LOG_ERROR("scripts", "Unhandled event ID {} for FallObject with GUID {}.", eventId, me->GetGUID());
-                    break;
-                }
+                ExecuteEvent(eventId);
             }
-        }
-
-        void RespawnAllFallObjects()
-        {
-            for (const ObjectGuid& guid : Eggs)
-            {
-                GameObject* egg = ObjectAccessor::GetGameObject(*me, guid);
-                if (egg)
-                {
-                    if (!egg->IsInWorld())
-                    {
-                        TC_LOG_ERROR("scripts", "FallObject with GUID {} is not in the world, cannot respawn.", guid);
-                        continue;
-                    }
-
-                    Map* map = egg->GetMap();
-                    if (!map)
-                    {
-                        TC_LOG_ERROR("scripts", "Map for FallObject with GUID {} not found.", guid);
-                        continue;
-                    }
-                    egg->SetRespawnTime(1);
-                    egg->Respawn();
-                    map->AddToMap(egg);
-                    UpdateGameObjectVisibility(egg);
-                    
-                    TC_LOG_ERROR("scripts", "Respawned FallObject with GUID {}.", guid);
-                }
-                else
-                {
-                    TC_LOG_ERROR("scripts", "Failed to find FallObject with GUID {} for respawn.", guid);
-                }
-            }
-
-            Eggs.clear();  // Clear the list of eggs after respawning
-            TC_LOG_ERROR("scripts", "Cleared the Eggs list after respawning all objects.");
         }
 
     private:
-        void HandleDespawn()
-        {
-            //uint32 newPhaseId = 2; // Beispiel-Phase
-
-            // Ändere die Phase des GameObjects
-            //PhasingHandler::ResetPhaseShift(me);
-            //PhasingHandler::AddPhase(me, newPhaseId, true);
-
-            // Setze Phase für den NPC
-            //PhasingHandler::AddPhase(me, newPhaseId, true);
-            Eggs.push_back(me->GetGUID());  // Store the GUID for later respawn
-            //me->DestroyForNearbyPlayers();
-            SetObjectInvisible(me);
-            TC_LOG_ERROR("scripts", "FallObject with GUID {} has been despawned and made invisible.", me->GetGUID());
-        }
-
-        void HandleRespawn()
-        {
-            //PhasingHandler::AddPhase(me, 0, true);
-            SetObjectVisible(me);
-            TC_LOG_ERROR("scripts", "FallObject with GUID {} has been respawned and made visible.", me->GetGUID());
-        }
-
-        void SetObjectInvisible(GameObject* go)
-        {
-            go->SetLootState(GO_JUST_DEACTIVATED);
-            TC_LOG_ERROR("scripts", "FallObject with GUID {} set to invisible.", go->GetGUID());
-        }
-
-        void SetObjectVisible(GameObject* go)
-        {
-            go->SetLootState(GO_READY);
-            TC_LOG_ERROR("scripts", "FallObject with GUID {} set to visible.", go->GetGUID());
-        }
-
-        void UpdateGameObjectVisibility(GameObject* go)
-        {
-            if (!go || !go->IsInWorld())
-                return;
-
-            Map* map = go->GetMap();
-            if (!map)
-                return;
-
-            // Aktualisiere die Sichtbarkeit für alle Spieler in der Nähe
-            go->DestroyForNearbyPlayers();
-            map->AddToMap(go);
-        }
-
         EventMap Events;
+
+        enum Events
+        {
+            EVENT_ACTIVATE = 1,
+            EVENT_END = 2
+        };
+
+        // Methoden zum Hinzufügen und Entfernen von GameObjects.
+        void AddDespawnedObject(GameObject* go)
+        {
+            if (go)
+            {
+                ObjectGuid guid = go->GetGUID();  // Get the complete ObjectGuid
+                DespawnedObjectMap[guid] = GameObjectInfo{
+                    go->GetEntry(),        // Entry ID of the object
+                    go->GetPositionX(),    // X coordinate
+                    go->GetPositionY(),    // Y coordinate
+                    go->GetPositionZ(),    // Z coordinate
+                    go->GetOrientation()   // Orientation of the object
+                };
+                TC_LOG_ERROR("scripts", "Added FallObject with GUID {} to the despawned list. Entry: {}, Position: (X: {}, Y: {}, Z: {}, O: {})", guid,
+                    go->GetEntry(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ(), go->GetOrientation());
+            }
+        }
+
+        void RespawnAllObjects()
+        {
+            for (const auto& [guid, objInfo] : DespawnedObjectMap)
+            {
+                Position pos = Position(objInfo.positionX, objInfo.positionY, objInfo.positionZ);
+                QuaternionData rot = QuaternionData::fromEulerAnglesZYX(objInfo.orientation, 0.f, 0.f);
+
+                if (GameObject* newGO = me->SummonGameObject(objInfo.entryId, pos, rot, 0s))
+                {
+                    TC_LOG_INFO("scripts", "GameObject with GUID {} was not found, so a new instance was created and respawned.", guid);
+                }
+                else
+                {
+                    TC_LOG_ERROR("scripts", "Failed to respawn GameObject with GUID {}.", guid);
+                }
+            }
+
+            DespawnedObjectMap.clear();
+        }
+
+        void ScheduleEvents(uint32 data)
+        {
+            switch (data)
+            {
+            case 1:
+                Events.ScheduleEvent(EVENT_ACTIVATE, Milliseconds(InitialEventDelay));  // Start des ersten Events.
+                break;
+            case TotalObjects:
+                Events.ScheduleEvent(EVENT_END, Milliseconds(FinalEventDelay));  // Letztes Objekt-Event.
+                break;
+            default:
+                uint32 timer = 25000 + (data - 2) * 10000;  // Angepasster Timer für andere Objekte.
+                Events.ScheduleEvent(EVENT_ACTIVATE, Milliseconds(timer));
+                break;
+            }
+        }
+
+        void ExecuteEvent(uint32 eventId)
+        {
+            switch (eventId)
+            {
+            case EVENT_ACTIVATE:
+                AddDespawnedObject(me);  // Objekt zur Despawn-Liste hinzufügen.
+                me->PlayDirectSound(ObjectSoundID);  // Ton für das Objekt abspielen.
+                //me->RemoveFromWorld();  // Objekt aus der Welt entfernen.
+                me->DespawnOrUnsummon();
+                //PhasingHandler::AddPhase(go, 173, true); // Add the object back to the default phase
+                //go->UpdateObjectVisibility(true);
+                TC_LOG_ERROR("scripts", "FallObject with GUID {} has been despawned.", me->GetGUID());
+                break;
+            case EVENT_END:
+                RespawnAllObjects();  // Alle Objekte respawnen.
+                endevent = true;
+                TC_LOG_INFO("scripts", "Fall Event ended. Respawning all objects.");
+                break;
+            default:
+                break;
+            }
+        }
     };
 
     GameObjectAI* GetAI(GameObject* go) const override
@@ -306,9 +336,11 @@ public:
     }
 };
 
+// Register all the scripts for the Fall Event
 void AddSC_FallEvent()
 {
-    TC_LOG_INFO("scripts", "Loading FallEvent script.");
+    new FallEventAnnounce();
     new Eventstarter();
     new FallObject();
 }
+
