@@ -111,7 +111,7 @@ public:
             {
                 std::ostringstream messageTaunt;
                 messageTaunt << "Whadda we have here? A high-roller eh? Step right up " << player->GetName() << "!";
-                player->GetSession()->SendNotification(messageTaunt.str().c_str());
+                player->GetSession()->SendNotification("%s", messageTaunt.str().c_str());
             }
 
             std::ostringstream messageJackpot;
@@ -272,7 +272,7 @@ public:
                 messageAction << "The bones come to rest with a total roll of " << Roll << ".";
                 messageNotice << "Wowzers " << player->GetName() << "! You hit the jackpot and win " << Jackpot << " gold!";
                 me->Whisper(messageAction.str().c_str(), LANG_UNIVERSAL, player);
-                player->GetSession()->SendNotification(messageNotice.str().c_str());
+                player->GetSession()->SendNotification("%s", messageNotice.str().c_str());
                 CloseGossipMenuFor(player);
                 me->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
                 return true;
