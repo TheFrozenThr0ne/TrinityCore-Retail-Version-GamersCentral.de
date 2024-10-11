@@ -94,61 +94,61 @@ public:
 
         bool OnGossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
         {
-            uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            //uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
             ClearGossipMenuFor(player);
 
-            if (CLASS_DRUID) {
+            if (player->GetClass() == CLASS_DRUID) {
                 player->LearnSpell(783, true);
             }
 
-            if (CLASS_HUNTER)
+            if (player->GetClass() == CLASS_HUNTER)
             {
                 player->LearnSpell(83242, true);
             }
 
-            if (CLASS_MAGE)
+            if (player->GetClass() == CLASS_MAGE)
             {
                 player->LearnSpell(118, true);
             }
 
-            if (CLASS_MONK)
+            if (player->GetClass() == CLASS_MONK)
             {
                 player->LearnSpell(322109, true);
             }
 
-            if (CLASS_PALADIN)
+            if (player->GetClass() == CLASS_PALADIN)
             {
                 player->LearnSpell(642, true);
             }
 
-            if (CLASS_PRIEST)
+            if (player->GetClass() == CLASS_PRIEST)
             {
                 player->LearnSpell(2006, true);
             }
 
-            if (CLASS_ROGUE)
+            if (player->GetClass() == CLASS_ROGUE)
             {
                 player->LearnSpell(315584, true);
             }
 
-            if (CLASS_SHAMAN)
+            if (player->GetClass() == CLASS_SHAMAN)
             {
                 player->LearnSpell(2645, true);
             }
 
-            if (CLASS_WARLOCK)
+            if (player->GetClass() == CLASS_WARLOCK)
             {
                 player->LearnSpell(697, true);
             }
 
-            if (CLASS_WARRIOR)
+            if (player->GetClass() == CLASS_WARRIOR)
             {
                 player->LearnSpell(163201, true);
             }
 
             player->ModifyMoney(25000, true);
 
-            switch (action)
+            switch (gossipListId)
             {
             case 1001:
                 player->TeleportTo(0, -8833.070312f, 622.778015f, 93.931702f, 0.677100f);
