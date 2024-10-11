@@ -519,6 +519,10 @@ class npc_promotion : public CreatureScript
             Field* fields = result->Fetch();
             uint32 pjts = fields[0].GetUInt32();
 
+            // Ensure the player is valid
+            if (!player)
+                return false;
+
             ClearGossipMenuFor(player);
 
             if (promotionEnable && ((int)pjts <= promotionCount))
