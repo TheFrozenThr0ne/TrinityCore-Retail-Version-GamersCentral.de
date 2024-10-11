@@ -104,7 +104,7 @@ namespace {
         void OnMapChanged(Player* player) override {
             if (sConfigMgr->GetBoolDefault("Solocraft.Enable", true)) {
                 Map* map = player->GetMap();
-                int difficulty = CalculateDifficulty(player, map);
+                int difficulty = CalculateDifficulty(map);
                 int numInGroup = GetNumInGroup(player);
                 ApplyBuffs(player, map, difficulty, numInGroup);
             }
