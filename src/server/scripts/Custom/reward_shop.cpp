@@ -282,7 +282,7 @@ public:
         uint32 say_timer;
         bool canSay;
 
-        void Reset()
+        void Reset() override
         {
             say_timer = 1000;
             canSay = false;
