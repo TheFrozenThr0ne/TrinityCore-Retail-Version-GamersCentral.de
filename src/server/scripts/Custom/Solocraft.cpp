@@ -336,7 +336,7 @@ private:
 public:
     SolocraftAnnounce() : PlayerScript("SolocraftAnnounce") {}
 
-    void OnLogin(Player* player, bool /*firstLogin*/)
+    void OnLogin(Player* player, bool /*firstLogin*/) override
     {
         if (SoloCraftEnable && SoloCraftAnnounceModule)
         {
