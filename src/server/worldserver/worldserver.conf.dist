@@ -4442,15 +4442,15 @@ Load.Locales = 1
 ###################################################################################################
 
 ###################################################################################################
-# ALL MOUNTS NPC
+# FALL EVENT
 #
 #
-#    AllMountsNPC.Announce
+#    FallEvent.Announce
 #        Description: Enable or Disable Announcement.
 #        Default:     Enabled  = 1
 #                     Disabled = 0
 
-AllMountsNPC.Announce = 1
+FallEvent.Announce = 1
 
 #
 #
@@ -4466,6 +4466,21 @@ AllMountsNPC.Announce = 1
 #                     Disabled = 0
 
 CodeboxNPC.Announce = 1
+
+#
+#
+###################################################################################################
+
+###################################################################################################
+# ALL MOUNTS NPC
+#
+#
+#    AllMountsNPC.Announce
+#        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = 1
+#                     Disabled = 0
+
+AllMountsNPC.Announce = 1
 
 #
 #
