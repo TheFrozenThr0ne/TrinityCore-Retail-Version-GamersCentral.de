@@ -332,7 +332,7 @@ public:
         }
 
         // Speak
-        void UpdateAI(uint32 diff)
+        void UpdateAI(uint32 diff) override
         {
 
             if (uiAdATimer <= diff)
