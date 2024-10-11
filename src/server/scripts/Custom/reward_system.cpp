@@ -1,13 +1,3 @@
-/*
-
-CREATE TABLE IF NOT EXISTS `reward_system` (
-  `roll` int(11) NOT NULL,
-  `item` int(11) NOT NULL,
-  `quantity` int(11)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-*/
-
 // Needs to be Implanted before: https://github.com/TrinityCore/TrinityCoreCustomChanges/commit/ebf94710f023e6d1bbf1b998d8014a3c7bdb5e31
 // Player.cpp
 // ScriptMgr.cpp
