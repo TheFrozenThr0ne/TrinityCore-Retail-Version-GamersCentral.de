@@ -85,9 +85,9 @@ public:
 
         bool OnGossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
         {
-            uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            //uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
 
-            switch (action)
+            switch (gossipListId)
             {
             case 1001:
 
