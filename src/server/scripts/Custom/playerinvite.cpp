@@ -52,7 +52,7 @@ public:
     }
 };
 
-static void AddSC_PlayerInvite()
+static void AddSC_playerinvite()
 {
     new PlayerInviteAnnounce();
     new PlayerInvite();
