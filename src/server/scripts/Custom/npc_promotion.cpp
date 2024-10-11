@@ -513,7 +513,7 @@ class npc_promotion : public CreatureScript
 
         bool OnGossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
         {
-            uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            //uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
             uint32 accountID = player->GetSession()->GetAccountId();
             QueryResult result = CharacterDatabase.PQuery("SELECT COUNT(`guid`) FROM `characters` WHERE `account` = {}", accountID);
             Field* fields = result->Fetch();
@@ -523,7 +523,7 @@ class npc_promotion : public CreatureScript
 
             if (promotionEnable && ((int)pjts <= promotionCount))
             {
-                if (action > GOSSIP_ACTION_INFO_DEF && action < 1020)
+                if (gossipListId > GOSSIP_ACTION_INFO_DEF && gossipListId < 1020)
                     player->GiveLevel(sConfigMgr->GetIntDefault("LevelForPromotion", 80)); // Level
 
                 //Money 2,5k
@@ -564,7 +564,7 @@ class npc_promotion : public CreatureScript
                     }
                 }
 
-                switch (action)
+                switch (gossipListId)
                 {
                     case 1001:
                         WarriorPromotionDps(player);
