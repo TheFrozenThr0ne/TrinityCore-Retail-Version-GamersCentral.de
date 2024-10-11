@@ -269,9 +269,8 @@ public:
                 Position pos = Position(objInfo.positionX, objInfo.positionY, objInfo.positionZ);
                 QuaternionData rot = QuaternionData::fromEulerAnglesZYX(objInfo.orientation, 0.f, 0.f);
 
-                if (GameObject* newGO = me->SummonGameObject(objInfo.entryId, pos, rot, 0s))
+                if (me->SummonGameObject(objInfo.entryId, pos, rot, 0s))
                 {
-                    newGO->Respawn();
                     TC_LOG_INFO("scripts", "GameObject with GUID {} was not found, so a new instance was created and respawned.", guid);
                 }
                 else
