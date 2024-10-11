@@ -98,8 +98,13 @@ public:
         uint32 Losses = 0;		// # of losses
 
         // Gossip Hello
-        bool OnGossipHello(Player* player)
+        bool OnGossipHello(Player* player) override
         {
+            // Ensure the player is valid
+            if (!player) {
+                return false;  // Return false if no player object is found
+            }
+
             ClearGossipMenuFor(player);
 
             Bets = 0;						// Reset # of bets placed
@@ -292,7 +297,7 @@ public:
                 messageAction << "The bones come to rest with a total roll of " << Roll << ".";
                 messageNotice << "Congratulations " << player->GetName() << ", You've won " << Amount / 10000 << " gold!";
                 me->Whisper(messageAction.str().c_str(), LANG_UNIVERSAL, player);
-                ChatHandler(player->GetSession()).SendSysMessage(messageNotice.str().c_str());
+                ChatHandler(player->GetSession()).SendSysMessage("s%", messageNotice.str().c_str());
                 me->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
             }
             else
@@ -304,7 +309,7 @@ public:
                 messageAction << "The bones come to rest with a total roll of " << Roll << ".";
                 messageNotice << "Tough luck " << player->GetName() << ", you've lost " << Amount / 10000 << " gold!";
                 me->Whisper(messageAction.str().c_str(), LANG_UNIVERSAL, player);
-                ChatHandler(player->GetSession()).SendSysMessage(messageNotice.str().c_str());
+                ChatHandler(player->GetSession()).SendSysMessage("s%", messageNotice.str().c_str());
                 me->HandleEmoteCommand(EMOTE_ONESHOT_QUESTION);
             }
 
