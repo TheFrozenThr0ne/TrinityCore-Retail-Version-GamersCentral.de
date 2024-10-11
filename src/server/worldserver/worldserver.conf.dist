@@ -4479,3 +4479,23 @@ AllowGM = 0
 #
 #
 ###################################################################################################
+
+###################################################################################################
+# Gambler NPC
+#    SoloLFG.Announce
+#        Description: Announce the module.
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+
+GamblerNPC.Announce = 1
+
+Gambler.Amount1 = 1
+Gambler.Amount2 = 2
+Gambler.Amount3 = 3
+Gambler.Amount4 = 4
+Gambler.Amount5 = 5
+Gambler.Jackpot = 50
+
+#
+#
+###################################################################################################
