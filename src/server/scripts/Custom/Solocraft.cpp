@@ -491,19 +491,34 @@ public:
     // Get the Player's class balance debuff
     uint32 GetClassBalance(Player* player)
     {
-        uint32 classBalance = 100;
+        if (!player) {
+            return 0;  // Return a default or error value if the player is null
+        }
 
-        if (classes.find(player->GetClass()) == classes.end())
-        {
-            return classBalance;
-        }
-        else if (classes[player->GetClass()] >= 0 && classes[player->GetClass()] <= 100)
-        {
-            return classes[player->GetClass()];
-        }
-        else
-        {
-            return classBalance;
+        switch (player->GetClass()) {
+        case CLASS_WARRIOR:
+            // Logic for Warrior class balance
+            return 100;
+
+        case CLASS_DRUID:
+            // Logic for Druid class balance
+            return 90;
+
+        case CLASS_MAGE:
+            // Logic for Mage class balance
+            return 80;
+
+            // Add other classes here
+        case CLASS_ROGUE:
+            return 85;
+
+        case CLASS_PRIEST:
+            return 70;
+
+            // Continue for all relevant classes
+
+        default:
+            return 50;  // Return a default balance for unknown or unsupported classes
         }
     }
 
