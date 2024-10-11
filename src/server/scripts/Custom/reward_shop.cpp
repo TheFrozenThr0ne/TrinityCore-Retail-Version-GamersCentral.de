@@ -288,7 +288,7 @@ public:
             canSay = false;
         }
 
-        void MoveInLineOfSight(Unit *who)
+        void MoveInLineOfSight(Unit *who) override
         {
             if (me->IsWithinDist(who, 5.0f) && who->GetTypeId() == TYPEID_PLAYER)
             {
@@ -298,7 +298,7 @@ public:
                 canSay = false;
         }
 
-        void UpdateAI(uint32 diff)
+        void UpdateAI(uint32 diff) override
         {
             if (say_timer <= diff)
             {
