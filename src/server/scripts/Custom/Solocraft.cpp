@@ -502,7 +502,9 @@ public:
             return classes[player->GetClass()];
         }
         else
+        {
             return classBalance;
+        }
     }
 
     // Get the current group members GUIDS and return the total sum of the difficulty offset by all group members currently in the dungeon
