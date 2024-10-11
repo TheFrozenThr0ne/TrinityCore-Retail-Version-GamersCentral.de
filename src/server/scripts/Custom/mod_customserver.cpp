@@ -200,20 +200,20 @@ public:
                     case CLASS_DEATH_KNIGHT:
                         player->AddItem(trinket, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
-                        //player->AddItem(weapon2, 1);
-                        //player->AddItem(weapon3, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
+                        player->AddItem(weapon2, 1);
+                        player->AddItem(weapon3, 1);
                         player->AddItem(bag, 2);
                         break;
 
                     case CLASS_PALADIN:
                         player->AddItem(trinket, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
                        // player->AddItem(weapon2, 1);
                         player->AddItem(bag, 2);
                         break;
@@ -221,92 +221,92 @@ public:
                     case CLASS_WARRIOR:
                         player->AddItem(trinket, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
-                        //player->AddItem(weapon2, 1);
-                        //player->AddItem(weapon3, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
+                        player->AddItem(weapon2, 1);
+                        player->AddItem(weapon3, 1);
                         player->AddItem(bag, 2);
                         break;
 
                     case CLASS_HUNTER:
                         player->AddItem(trinket, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
-                        //player->AddItem(weapon2, 1);
-                        //player->AddItem(weapon3, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
+                        player->AddItem(weapon2, 1);
+                        player->AddItem(weapon3, 1);
                         player->AddItem(bag, 2);
                         break;
 
                     case CLASS_ROGUE:
                         player->AddItem(trinket, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
-                        //player->AddItem(weapon2, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
+                        player->AddItem(weapon2, 1);
                         player->AddItem(bag, 2);
                         break;
 
                     case CLASS_DRUID:
                         player->AddItem(trinket, 2);
-                        //player->AddItem(trinket2, 2);
+                        player->AddItem(trinket2, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
-                        //player->AddItem(shoulders2, 1);
-                        //player->AddItem(chest2, 1);
-                        //player->AddItem(weapon2, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
+                        player->AddItem(shoulders2, 1);
+                        player->AddItem(chest2, 1);
+                        player->AddItem(weapon2, 1);
                         player->AddItem(bag, 2);
                         break;
 
                     case CLASS_MONK:
                         player->AddItem(trinket, 2);
-                        //player->AddItem(trinket2, 2);
+                        player->AddItem(trinket2, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
-                        //player->AddItem(shoulders2, 1);
-                        //player->AddItem(chest2, 1);
-                        //player->AddItem(weapon2, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
+                        player->AddItem(shoulders2, 1);
+                        player->AddItem(chest2, 1);
+                        player->AddItem(weapon2, 1);
                         player->AddItem(bag, 2);
                         break;
 
                     case CLASS_DEMON_HUNTER:
                         player->AddItem(trinket, 2);
-                        //player->AddItem(trinket2, 2);
+                        player->AddItem(trinket2, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
-                        //player->AddItem(shoulders2, 1);
-                        //player->AddItem(chest2, 1);
-                        //player->AddItem(weapon2, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
+                        player->AddItem(shoulders2, 1);
+                        player->AddItem(chest2, 1);
+                        player->AddItem(weapon2, 1);
                         player->AddItem(bag, 2);
                         break;
 
                     case CLASS_SHAMAN:
                         player->AddItem(trinket, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
-                        //player->AddItem(shoulders2, 1);
-                        //player->AddItem(chest2, 1);
-                        //player->AddItem(weapon2, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
+                        player->AddItem(shoulders2, 1);
+                        player->AddItem(chest2, 1);
+                        player->AddItem(weapon2, 1);
                         player->AddItem(bag, 2);
                         break;
 
                     default:
                         player->AddItem(trinket, 2);
                         player->AddItem(ring, 1);
-                        //player->AddItem(shoulders, 1);
-                        //player->AddItem(chest, 1);
-                        //player->AddItem(weapon, 1);
+                        player->AddItem(shoulders, 1);
+                        player->AddItem(chest, 1);
+                        player->AddItem(weapon, 1);
                         player->AddItem(bag, 2);
                         break;
                     }
