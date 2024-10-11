@@ -16,7 +16,6 @@
 
 class PlayerInviteAnnounce : public PlayerScript
 {
-
 public:
 
     PlayerInviteAnnounce() : PlayerScript("PlayerInviteAnnounce") {}
@@ -52,7 +51,7 @@ public:
     }
 };
 
-static void AddPlayerInviteScripts()
+void AddPlayerInviteScripts()
 {
     new PlayerInviteAnnounce();
     new PlayerInvite();
