@@ -556,7 +556,7 @@ class npc_promotion : public CreatureScript
                     if (equippedbags)
                     {
                         for (int slot = INVENTORY_SLOT_BAG_START; slot < INVENTORY_SLOT_BAG_END; slot++)
-                            if (Item* bag = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
+                            if (player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
                                 player->DestroyItem(INVENTORY_SLOT_BAG_0, slot, true);
 
                         for (int slot = INVENTORY_SLOT_BAG_START; slot < INVENTORY_SLOT_BAG_END; slot++)
