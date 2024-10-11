@@ -189,7 +189,7 @@ public:
         return true;
     }
 
-    bool OnGossipSelectCode(Player *player, uint32 /* sender */, uint32, const char *code)
+    bool OnGossipSelectCode(Player *player, uint32 /* sender */, uint32, const char *code) override
     {
         ObjectGuid playerguid = player->GetGUID();
         std::string playerIP = player->GetSession()->GetRemoteAddress();
