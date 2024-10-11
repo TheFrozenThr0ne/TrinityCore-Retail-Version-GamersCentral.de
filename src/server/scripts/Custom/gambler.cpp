@@ -1,32 +1,6 @@
 /*
-
-# creature_template
-
-insert  into `creature_template`(`entry`,`KillCredit1`,`KillCredit2`,`name`,`femaleName`,`subname`,`TitleAlt`,`IconName`,`RequiredExpansion`,`VignetteID`,`faction`,`npcflag`,`speed_walk`,`speed_run`,`scale`,`Classification`,`dmgschool`,`BaseAttackTime`,`RangeAttackTime`,`BaseVariance`,`RangeVariance`,`unit_class`,`unit_flags`,`unit_flags2`,`unit_flags3`,`family`,`trainer_class`,`type`,`VehicleId`,`AIName`,`MovementType`,`ExperienceModifier`,`RacialLeader`,`movementId`,`WidgetSetID`,`WidgetSetUnitConditionID`,`RegenHealth`,`CreatureImmunitiesId`,`flags_extra`,`ScriptName`,`StringId`,`VerifiedBuild`) values
-(500010,0,0,'Skinny',NULL,'Gambler',NULL,NULL,0,0,35,1,1,1.14286,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,'SmartAI',0,1,0,0,0,0,1,0,0,'gamble_npc',NULL,0);
-
-
-# creature_template_model
-
-insert  into `creature_template_model`(`CreatureID`,`Idx`,`CreatureDisplayID`,`DisplayScale`,`Probability`,`VerifiedBuild`) values
-(500010,0,7337,1,1,0);
-
-
-# creature_template_gossip
-
-insert  into `creature_template_gossip`(`CreatureID`,`MenuID`,`VerifiedBuild`) values
-(500010,600000,0);
-
-
-# gossip_menu
-
-insert  into `gossip_menu`(`MenuID`,`TextID`,`VerifiedBuild`) values
-(600000,68,0);
-
-*/
-
-/*
 Add the following at the end of your worldserver.conf
+
 GamblerNPC.Announce = 1
 Gambler.Amount1 = 1
 Gambler.Amount2 = 2
