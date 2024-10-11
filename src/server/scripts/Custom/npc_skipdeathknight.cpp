@@ -101,14 +101,14 @@ public:
 
         bool OnGossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
         {
-            uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            //uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
             ClearGossipMenuFor(player);
 
             player->LearnSpell(53428, true); // Runeforging
             player->LearnSpell(50977, true); // Death Gate
             player->ModifyMoney(50000, true);
 
-            switch (action)
+            switch (gossipListId)
             {
             case 1001:
 
