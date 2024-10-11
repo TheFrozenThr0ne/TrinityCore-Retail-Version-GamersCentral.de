@@ -140,6 +140,7 @@ public:
 
         bool OnGossipHello(Player* player) override
         {
+            TC_LOG_ERROR("scripts", "Player {} has requested the event start option.", player->GetName());
             AddGossipItemFor(player, GossipOptionNpc::None, "Start Fall Event!", GOSSIP_SENDER_MAIN, 1);
             SendGossipMenuFor(player, EventStarterGossipMenuID, me->GetGUID());
             return true;
@@ -154,7 +155,7 @@ public:
 
             if (action == 1 && endevent) // Player selected to start the event
             {
-                TC_LOG_INFO("scripts", "Player %s has started the Fall Event.", player->GetName().c_str());
+                TC_LOG_INFO("scripts", "Player {} has started the Fall Event.", player->GetName().c_str());
                 endevent = false; // Start the event
                 objectsRecreated = false; // Start the event
                 StartEvent(player); // Start the event sequence
