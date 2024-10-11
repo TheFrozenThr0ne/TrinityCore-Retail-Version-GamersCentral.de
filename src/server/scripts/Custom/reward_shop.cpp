@@ -112,7 +112,7 @@ public:
 
     bool failedcode;
 
-    bool OnGossipHello(Player *player)
+    bool OnGossipHello(Player *player) override
     {
         if (player->IsInCombat())
             return false;
