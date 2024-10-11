@@ -216,7 +216,7 @@ public:
         }
 
         // Gossip Select Gold
-        bool OnGossipSelectGold(Player* player, uint32 /*gossipListId*/, uint32 gold)
+        bool OnGossipSelectGold(Player* player, uint32 /*gossipListId*/, uint32 gold) override
         {
             ClearGossipMenuFor(player);
 
