@@ -4445,6 +4445,15 @@ Load.Locales = 1
 # REWARD SHOP
 #
 #
+#    reward_shop.Announce
+#        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = true
+#                     Disabled = false
+
+reward_shop.Announce = true
+
+#
+#
 #    RewardShopEnable
 #        Description: Enable or Disable the NPC ingame shop.
 #        Default:     Enabled  = 1
