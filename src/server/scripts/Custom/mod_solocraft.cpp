@@ -118,7 +118,7 @@ namespace {
 
         std::map<ObjectGuid, int> _unitDifficulty;
 
-        int CalculateDifficulty(Player* player, Map* map) {
+        int CalculateDifficulty(Map* map) {
             int difficulty = 1;
             if (map) {
                 if (map->Is25ManRaid()) {
