@@ -324,7 +324,7 @@ public:
         uint32 uiAdBTimer;
         uint32 uiAdCTimer;
 
-        void Reset()
+        void Reset() override
         {
             uiAdATimer = 1000;
             uiAdBTimer = 23000;
