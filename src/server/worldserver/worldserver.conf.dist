@@ -42,6 +42,17 @@
 #    METRIC SETTINGS
 #    PVP SETTINGS
 #    LOAD SETTINGS
+#	 FALL EVENT SETTINGS
+#	 SOLO LFG SETTINGS
+#	 REWARD SYSTEM SETTINGS
+#	 REWARD SHOP CODEBOX SETTINGS NPC
+#	 SKIP WORGEN NPC SETTINGS
+#	 SKIP DRACHTHYR NPC SETTINGS
+#	 SKIP EXILES REACH NPC SETTINGS
+#	 SKIP DEATHKNIGHT NPC SETTINGS
+#	 ALL MOUNTS NPC SETTINGS
+#	 GAMBLER NPC SETTINGS
+#	 PROMOTION SETTINGS NPC
 #
 ###################################################################################################
 
@@ -4442,7 +4453,7 @@ Load.Locales = 1
 ###################################################################################################
 
 ###################################################################################################
-# FALL EVENT
+# FALL EVENT SETTINGS
 #
 #
 #    FallEvent.Announce
@@ -4457,97 +4468,7 @@ FallEvent.Announce = 1
 ###################################################################################################
 
 ###################################################################################################
-# CODEBOX NPC
-#
-#
-#    CodeboxNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-CodeboxNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# ALL MOUNTS NPC
-#
-#
-#    AllMountsNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-AllMountsNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# SKIP WORGEN NPC
-#
-#
-#    SkipWorgenNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-SkipWorgenNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# SKIP DRACHTHYR NPC
-#
-#
-#    SkipDrachthyrNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-SkipDrachthyrNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# SKIP EXILES REACH NPC
-#
-#
-#    SkipExilesReachNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-SkipExilesReachNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# SKIP DEATHKNIGHT NPC
-#
-#
-#    SkipDeathKnightNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-SkipDeathKnightNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# SOLO LFG
+# SOLO LFG SETTINGS
 #
 #    SoloLFG.Enable
 #        Description: Enable the module.
@@ -4568,7 +4489,45 @@ SoloLFG.Announce = 1
 ###################################################################################################
 
 ###################################################################################################
-# REWARD SHOP
+# REWARD SYSTEM SETTINGS
+#
+#    RewardSystemAnnounce
+#        Description: Announce the reward system
+#        Default:     1  - (Enabled)
+#
+
+RewardSystem.Announce = 1
+
+#
+#    RewardSystemEnable
+#        Description: Enable the reward system
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+
+RewardSystemEnable = 1
+
+#
+#    RewardTime
+#        Description: Time in hours to reward the player
+#        Default:     1  - (Enabled)
+#
+
+RewardTime = 1
+
+#
+#    MaxRoll
+#        Description: Max roll the player will do
+#        Default:     1000  - (Enabled)
+#
+
+MaxRoll = 100
+
+#
+#
+###################################################################################################
+
+###################################################################################################
+# REWARD SHOP SETTINGS NPC
 #
 #
 #    reward_shop.Announce
@@ -4607,45 +4566,82 @@ AllowGM = 0
 ###################################################################################################
 
 ###################################################################################################
-# Reward System
+# SKIP WORGEN NPC SETTINGS
 #
-#    RewardSystemAnnounce
-#        Description: Announce the reward system
-#        Default:     1  - (Enabled)
 #
+#    SkipWorgenNPC.Announce
+#        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = 1
+#                     Disabled = 0
 
-RewardSystem.Announce = 1
-
-#
-#    RewardSystemEnable
-#        Description: Enable the reward system
-#        Default:     1  - (Enabled)
-#                     0  - (Disabled)
-
-RewardSystemEnable = 1
-
-#
-#    RewardTime
-#        Description: Time in hours to reward the player
-#        Default:     1  - (Enabled)
-#
-
-RewardTime = 1
-
-#
-#    MaxRoll
-#        Description: Max roll the player will do
-#        Default:     1000  - (Enabled)
-#
-
-MaxRoll = 100
+SkipWorgenNPC.Announce = 1
 
 #
 #
 ###################################################################################################
 
 ###################################################################################################
-# Gambler NPC
+# SKIP DRACHTHYR NPC SETTINGS
+#
+#
+#    SkipDrachthyrNPC.Announce
+#        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = 1
+#                     Disabled = 0
+
+SkipDrachthyrNPC.Announce = 1
+
+#
+#
+###################################################################################################
+
+######################### SETTINGS##########################################################################
+# SKIP EXILES REACH NPC SETTINGS
+#
+#
+#    SkipExilesReachNPC.Announce
+#        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = 1
+#                     Disabled = 0
+
+SkipExilesReachNPC.Announce = 1
+
+#
+#
+###################################################################################################
+
+###################################################################################################
+# SKIP DEATHKNIGHT NPC SETTINGS
+#
+#
+#    SkipDeathKnightNPC.Announce
+#        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = 1
+#                     Disabled = 0
+
+SkipDeathKnightNPC.Announce = 1
+
+#
+#
+###################################################################################################
+
+###################################################################################################
+# ALL MOUNTS NPC SETTINGS
+#
+#
+#    AllMountsNPC.Announce
+#        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = 1
+#                     Disabled = 0
+
+AllMountsNPC.Announce = 1
+
+#
+#
+###################################################################################################
+
+###################################################################################################
+# GAMBLER NPC SETTINGS
 #    SoloLFG.Announce
 #        Description: Announce the module.
 #        Default:     1  - (Enabled)
@@ -4675,7 +4671,7 @@ Gambler.Jackpot = 50
 #                         /\___/ /\____/                                                
 #                         \/__/  \_/__/          http://stygianthebest.github.io                                         
 ###################################################################################################
-#  SOLOCRAFT
+#  SOLOCRAFT SETTINGS
 ###################################################################################################
 
 # Enable the module? (1: true | 0: false)
@@ -5110,7 +5106,7 @@ Solocraft.ChamberOfAspectsRed.Level = 80
 
 
 ###################################################################################################
-# SECTION INDEX
+# PROMOTION SECTION INDEX
 #
 #    ANNOUNCE ENABLE
 #    SETTIGNS MODULE
@@ -5128,7 +5124,7 @@ Solocraft.ChamberOfAspectsRed.Level = 80
 announce_module.enableHelloWorld=true
 
 ######################################################################################################
-#	SETTIGNS MODULE
+#	PROMOTION SETTIGNS MODULE
 #
 #		NpcPromotion.enable
 #
