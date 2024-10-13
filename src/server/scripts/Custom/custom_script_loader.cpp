@@ -19,6 +19,32 @@
 
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
+
+void AddRewardShopScripts();
+void AddSC_npc_promotion();
+void AddSC_AllMountsNPCScripts();
+void AddNPCGamblerScripts();
+void AddSC_SkipExilesReachNPCScripts();
+void AddSC_SkipWorgenNPCScripts();
+void AddSC_SkipDrachthyrNPCScripts();
+void AddSC_SkipDeathKnightNPCScripts();
+void AddSC_SkipAlliedTeleporterNPCScripts();
+void AddLfgSoloScripts();
+void AddRewardSystemScripts();
+void AddSC_FallEvent();
+
 void AddCustomScripts()
 {
+    AddRewardShopScripts();
+    AddSC_npc_promotion();
+    AddSC_AllMountsNPCScripts();
+    AddNPCGamblerScripts();
+    AddSC_SkipExilesReachNPCScripts();
+    AddSC_SkipWorgenNPCScripts();
+    AddSC_SkipDrachthyrNPCScripts();
+    AddSC_SkipDeathKnightNPCScripts();
+    AddSC_SkipAlliedTeleporterNPCScripts();
+    AddLfgSoloScripts();
+    AddRewardSystemScripts();
+    AddSC_FallEvent();
 }
