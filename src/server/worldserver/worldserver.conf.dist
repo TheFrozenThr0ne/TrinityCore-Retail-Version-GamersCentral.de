@@ -46,11 +46,7 @@
 #    SOLO LFG SETTINGS
 #    REWARD SYSTEM SETTINGS
 #    REWARD SHOP CODEBOX SETTINGS NPC
-#    SKIP WORGEN NPC SETTINGS
-#    SKIP DRACHTHYR NPC SETTINGS
-#    SKIP EXILES REACH NPC SETTINGS
-#    SKIP DEATHKNIGHT NPC SETTINGS
-#    SKIP ALLIED NPC SETTINGS
+#    SKIP STARTING NPC SETTINGS
 #    ALL MOUNTS NPC SETTINGS
 #    GAMBLER NPC SETTINGS
 #    PROMOTION SETTINGS NPC
@@ -4588,7 +4584,6 @@ SkipStartingNPC.SetLevel20 = 1
 #
 #
 ###################################################################################################
-
 
 ###################################################################################################
 # ALL MOUNTS NPC SETTINGS
