@@ -20,11 +20,12 @@ INSERT INTO `creature_template_model`(`CreatureID`,`Idx`,`CreatureDisplayID`,`Di
 /*Data for the table `creature_template_gossip` */
 DELETE FROM creature_template_gossip WHERE CreatureID = @ENTRY AND MenuID = @GOSSIP_MENU;
 INSERT INTO `creature_template_gossip`(`CreatureID`,`MenuID`,`VerifiedBuild`) VALUES 
-(@ENTRY,@GOSSIP_MENU,55261);
+(@ENTRY,@GOSSIP_MENU,0);
 
 /*Data for the table `gossip_menu` */
 DELETE FROM gossip_menu WHERE menuid BETWEEN @GOSSIP_MENU AND @GOSSIP_MENU+45;
 INSERT INTO gossip_menu (MenuID, TextID, VerifiedBuild) VALUES 
+(@GOSSIP_MENU, 68, 0),
 (@GOSSIP_MENU, @TEXT_ID, 0),
 (@GOSSIP_MENU+1, @TEXT_ID+2, 0),
 (@GOSSIP_MENU+2, @TEXT_ID+2, 0),
