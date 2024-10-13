@@ -114,11 +114,13 @@ public:
                 {
                     AddGossipItemFor(player, GossipOptionNpc::None, "Give provided stuff so i can Skip!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 9);
                 }
+                break;
             case RACE_DRACTHYR_HORDE:
                 if (!player->HasItemCount(193914, 1) || !player->HasSpell(351239))
                 {
                     AddGossipItemFor(player, GossipOptionNpc::None, "Give provided stuff so i can Skip!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 10);
                 }
+                break;
             case RACE_DRACTHYR_ALLIANCE:
                 if (!player->HasItemCount(193914, 1) || !player->HasSpell(351239))
                 {
