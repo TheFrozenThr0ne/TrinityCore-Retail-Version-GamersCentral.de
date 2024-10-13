@@ -223,9 +223,13 @@ public:
                 }
             }
 
-            if (player->GetLevel() < 20)
+            // Announce Module
+            if (sConfigMgr->GetIntDefault("SkipStartingNPC.SetLevel20", 1))
             {
-                AddGossipItemFor(player, GossipOptionNpc::None, "Set Level to 20! Enjoy or not!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 26);
+                if (player->GetLevel() < 20)
+                {
+                    AddGossipItemFor(player, GossipOptionNpc::None, "Set Level to 20! Enjoy or not!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 26);
+                }
             }
 
             SendGossipMenuFor(player, 68, me->GetGUID());
