@@ -50,6 +50,7 @@
 #    SKIP DRACHTHYR NPC SETTINGS
 #    SKIP EXILES REACH NPC SETTINGS
 #    SKIP DEATHKNIGHT NPC SETTINGS
+#    SKIP ALLIED NPC SETTINGS
 #    ALL MOUNTS NPC SETTINGS
 #    GAMBLER NPC SETTINGS
 #    PROMOTION SETTINGS NPC
@@ -4624,6 +4625,22 @@ SkipDeathKnightNPC.Announce = 1
 #
 #
 ###################################################################################################
+
+###################################################################################################
+# SKIP ALLIED NPC SETTINGS
+#
+#
+#    SkipAlliedTeleporterNPC.Announce
+#        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = 1
+#                     Disabled = 0
+
+SkipAlliedTeleporterNPC.Announce = 1
+
+#
+#
+###################################################################################################
+
 
 ###################################################################################################
 # ALL MOUNTS NPC SETTINGS
