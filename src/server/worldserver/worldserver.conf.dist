@@ -4567,75 +4567,23 @@ AllowGM = 0
 ###################################################################################################
 
 ###################################################################################################
-# SKIP WORGEN NPC SETTINGS
-#
-#
-#    SkipWorgenNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-SkipWorgenNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# SKIP DRACHTHYR NPC SETTINGS
-#
-#
-#    SkipDrachthyrNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-SkipDrachthyrNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-######################### SETTINGS##########################################################################
-# SKIP EXILES REACH NPC SETTINGS
-#
-#
-#    SkipExilesReachNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-SkipExilesReachNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# SKIP DEATHKNIGHT NPC SETTINGS
-#
-#
-#    SkipDeathKnightNPC.Announce
-#        Description: Enable or Disable Announcement.
-#        Default:     Enabled  = 1
-#                     Disabled = 0
-
-SkipDeathKnightNPC.Announce = 1
-
-#
-#
-###################################################################################################
-
-###################################################################################################
-# SKIP ALLIED NPC SETTINGS
+# SKIP STARTING NPC SETTINGS
 #
 #
 #    SkipAlliedTeleporterNPC.Announce
 #        Description: Enable or Disable Announcement.
+#        Default:     Enabled  = true
+#                     Disabled = false
+
+SkipStartingNPC.Announce = true
+
+#
+#    SkipStartingNPC.SetLevel20
+#        Description: Enable or Disable Set Player Level to 20 gossip.
 #        Default:     Enabled  = 1
 #                     Disabled = 0
 
-SkipAlliedTeleporterNPC.Announce = 1
+SkipStartingNPC.SetLevel20 = 1
 
 #
 #
