@@ -225,7 +225,7 @@ public:
 
             if (player->GetLevel() < 20)
             {
-                AddGossipItemFor(player, GossipOptionNpc::None, "Set Level to 20! Enjoy or not!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 15);
+                AddGossipItemFor(player, GossipOptionNpc::None, "Set Level to 20! Enjoy or not!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 26);
             }
 
             SendGossipMenuFor(player, 68, me->GetGUID());
