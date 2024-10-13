@@ -57,9 +57,9 @@ public:
 
         bool OnGossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
         {
-            //uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
 
-            switch (gossipListId)
+            switch (action)
             {
             case 1001:
 
@@ -77,7 +77,7 @@ public:
                 break;
             case 1002:
 
-                player->SetLevel(30, true);
+                player->SetLevel(20, true);
 
                 break;
             default:

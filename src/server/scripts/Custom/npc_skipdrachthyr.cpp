@@ -67,7 +67,7 @@ public:
 
         bool OnGossipSelect(Player* player, uint32 /*menuId*/, uint32 gossipListId) override
         {
-            //uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            uint32 const action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
             ClearGossipMenuFor(player);
 
             player->LearnSpell(356995, true);
@@ -79,7 +79,7 @@ public:
             player->AddItem(193914, 1);
             player->ModifyMoney(5000000, true);
 
-            switch (gossipListId)
+            switch (action)
             {
             case 1001:
                 player->TeleportTo(0, -8833.070312f, 622.778015f, 93.931702f, 0.677100f);
