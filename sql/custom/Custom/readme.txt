@@ -22,3 +22,4 @@ NPC Jukebox
 NPC Promotion
 NPC Reward Shop
 NPC Skip Starting
+NPC Portal Master
