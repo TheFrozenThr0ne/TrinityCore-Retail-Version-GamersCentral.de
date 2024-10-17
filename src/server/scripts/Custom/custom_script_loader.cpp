@@ -24,6 +24,7 @@ void AddRewardShopScripts();
 void AddSC_npc_promotion();
 void AddSC_AllMountsNPCScripts();
 void AddNPCGamblerScripts();
+void AddSC_paymaster_npc();
 void AddSC_SkipStartingNPCScripts();
 void AddLfgSoloScripts();
 void AddRewardSystemScripts();
@@ -35,6 +36,7 @@ void AddCustomScripts()
     AddSC_npc_promotion();
     AddSC_AllMountsNPCScripts();
     AddNPCGamblerScripts();
+	AddSC_paymaster_npc();
     AddSC_SkipStartingNPCScripts();
     AddLfgSoloScripts();
     AddRewardSystemScripts();

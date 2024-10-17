@@ -45,6 +45,7 @@
 #    FALL EVENT SETTINGS
 #    SOLO LFG SETTINGS
 #    REWARD SYSTEM SETTINGS
+#    PAYMASTER NPC SETTINGS
 #    REWARD SHOP CODEBOX SETTINGS NPC
 #    SKIP STARTING NPC SETTINGS
 #    ALL MOUNTS NPC SETTINGS
@@ -4518,6 +4519,33 @@ RewardTime = 1
 #
 
 MaxRoll = 100
+
+#
+#
+###################################################################################################
+
+###################################################################################################
+# PAYMASTER NPC SETTINGS
+#
+#
+#    Paymaster
+#        Enable this for a PTR style Paymaster implementation
+#
+#    Paymaster.Announce.Enable
+#         Description: Announces Module when player logs in.
+#         Default:    0 - (Disabled)
+#                     1 - (Enabled)
+#
+
+Paymaster.Announce.Enable = 1
+
+#
+#    Paymaster.AddGold
+#         Configurable gold added amount from Paymaster
+#         Default:    5000
+#
+
+Paymaster.AddGold = 5000
 
 #
 #
