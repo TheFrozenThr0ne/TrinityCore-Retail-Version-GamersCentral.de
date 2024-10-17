@@ -1,3 +1,11 @@
+ALTER DATABASE `world` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+ALTER TABLE creature_template CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE creature_template_model CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE creature_template_gossip CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE gossip_menu CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE gossip_menu_option CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE smart_scripts CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 SET
 @ENTRY          := 500005,
 @NAME           := "Soundsinger",

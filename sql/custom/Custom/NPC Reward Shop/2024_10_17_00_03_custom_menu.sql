@@ -1,2 +1,2 @@
 INSERT INTO `gossip_menu`(`MenuID`,`TextID`,`VerifiedBuild`) VALUES
-(600000,68,0);
+(600005,68,0);
