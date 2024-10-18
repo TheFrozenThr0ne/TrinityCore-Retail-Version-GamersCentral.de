@@ -97,9 +97,9 @@ public:
             if (!player)
                 return false;
 
-            //uint32 action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
+            uint32 action = player->PlayerTalkClass->GetGossipOptionAction(gossipListId);
 
-            if (gossipListId == 1 && endevent) // Player selected to start the event
+            if (action == 1 && endevent) // Player selected to start the event
             {
                 TC_LOG_INFO("scripts", "Player {} has started the Fall Event.", player->GetName().c_str());
                 endevent = false; // Start the event
