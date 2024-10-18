@@ -18,9 +18,9 @@ This custom scripts are all "WORLD" Database specified. So if you decide to have
 FallEvent
 NPC All Mounts
 NPC Gambler
+NPC Jukebox -- must be applied manually to the database - core auto update Outputs an error.
 NPC Paymaster
-NPC Jukebox
+NPC Portal Master -- 1 hotfixes file for broadcast_text for specify page.
 NPC Promotion
 NPC Reward Shop
 NPC Skip Starting
-NPC Portal Master -- 1 hotfixes file for broadcast_text for specify page.
