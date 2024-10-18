@@ -51,13 +51,10 @@ INSERT INTO `creature_template_model`(`CreatureID`,`Idx`,`CreatureDisplayID`,`Di
 INSERT INTO `creature_template_gossip`(`CreatureID`,`MenuID`,`VerifiedBuild`) VALUES
 (@ENTRY,@GOSSIP_MENU,0);
 
-
-
-
 -- Gossip header text link to menus
 
 INSERT INTO gossip_menu (`menuid`, `textid`) VALUES
-/*(@GOSSIP_MENU+4, @TEXT_ID+3),
+(@GOSSIP_MENU+4, @TEXT_ID+3),
 (@GOSSIP_MENU+3, @TEXT_ID+2),
 (@GOSSIP_MENU+2, @TEXT_ID+2),
 (@GOSSIP_MENU+1, @TEXT_ID+2),
@@ -65,17 +62,21 @@ INSERT INTO gossip_menu (`menuid`, `textid`) VALUES
 (@GOSSIP_MENU+7, @TEXT_ID+4),
 (@GOSSIP_MENU+6, @TEXT_ID+4),
 (@GOSSIP_MENU+5, @TEXT_ID+4),
-(@GOSSIP_MENU, @TEXT_ID+1),*/
-(@GOSSIP_MENU, 68);
+(@GOSSIP_MENU, @TEXT_ID+1),
+(@GOSSIP_MENU, @TEXT_ID);
 
 -- Gossip header texts
 
---INSERT INTO npc_text (`ID`, `Probability0`, `Probability1`, `Probability2`, `Probability3`, `Probability4`, `Probability5`, `Probability6`, `Probability7`, `BroadcastTextID0`, `BroadcastTextID1`, `BroadcastTextID2`, `BroadcastTextID3`, `BroadcastTextID4`, `BroadcastTextID5`, `BroadcastTextID6` , `BroadcastTextID7`, `VerifiedBuild`) VALUES
---(@TEXT_ID+4, "$BWhere would you like to be ported?$B", 0),
---(@TEXT_ID+3, "$BBe careful with choosing raids, I won't be there if you wipe.$B", 0),
---(@TEXT_ID+2, "$BUp for some dungeon exploring?$B", 0),
---(@TEXT_ID+1, "$B For The Alliance!$B", 6),
---(@TEXT_ID,  "$B For the Horde!$B", 6);
+/* HOTFIXES */
+
+/* Data for the table `npc_text` */
+
+INSERT INTO `npc_text`(`ID`,`Probability0`,`Probability1`,`Probability2`,`Probability3`,`Probability4`,`Probability5`,`Probability6`,`Probability7`,`BroadcastTextID0`,`BroadcastTextID1`,`BroadcastTextID2`,`BroadcastTextID3`,`BroadcastTextID4`,`BroadcastTextID5`,`BroadcastTextID6`,`BroadcastTextID7`,`VerifiedBuild`) VALUES
+(@TEXT_ID,1,0,0,0,0,0,0,0,@TEXT_ID,0,0,0,0,0,0,0,0),
+(@TEXT_ID+1,1,0,0,0,0,0,0,0,@TEXT_ID+1,0,0,0,0,0,0,0,0),
+(@TEXT_ID+2,1,0,0,0,0,0,0,0,@TEXT_ID+2,0,0,0,0,0,0,0,0),
+(@TEXT_ID+3,1,0,0,0,0,0,0,0,@TEXT_ID+3,0,0,0,0,0,0,0,0),
+(@TEXT_ID+4,1,0,0,0,0,0,0,0,@TEXT_ID+4,0,0,0,0,0,0,0,0);
 
 -- Conditions for gossip option and menu factions
 
