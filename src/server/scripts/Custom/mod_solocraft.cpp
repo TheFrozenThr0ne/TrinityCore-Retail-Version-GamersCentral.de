@@ -92,12 +92,10 @@ namespace {
             TC_LOG_INFO("scripts.solocraft.player.instance", "[Solocraft] solocraft_player_instance_handler Loaded");
         }
 
-        void OnLogin(Player* player, bool firstLogin) override {
-            if (firstLogin) {
-                if (sConfigMgr->GetBoolDefault("Solocraft.Enable", true))
-                {
-                    ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00SoloCraft |rmodule.");
-                }
+        void OnLogin(Player* player, bool /*firstLogin*/) override {
+            if (sConfigMgr->GetBoolDefault("Solocraft.Enable", true))
+            {
+               ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00SoloCraft |rmodule.");
             }
         }
 

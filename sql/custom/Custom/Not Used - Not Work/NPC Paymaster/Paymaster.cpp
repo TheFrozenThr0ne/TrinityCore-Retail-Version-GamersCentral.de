@@ -15,6 +15,7 @@
 #include "WorldSession.h"
 #include "Spells/SpellMgr.h"
 #include <Commands/cs_learn.cpp>
+
 class Trinitycore_Paymaster_announce : public PlayerScript
 {
 public:
@@ -27,13 +28,13 @@ public:
         }
     }
 };
-class npc_paymaster : public CreatureScript
+class npc_paymasterNPC : public CreatureScript
 {
 public:
-    npc_paymaster() : CreatureScript("npc_paymaster") { }
-    struct npc_paymasterAI : public ScriptedAI
+    npc_paymasterNPC() : CreatureScript("npc_paymasterNPC") { }
+    struct npc_paymasterNPCAI : public ScriptedAI
     {
-        npc_paymasterAI(Creature* creature) : ScriptedAI(creature) { }
+        npc_paymasterNPCAI(Creature* creature) : ScriptedAI(creature) { }
         bool OnGossipHello(Player* player) override
         {
             if (player->IsInCombat())
@@ -216,11 +217,11 @@ public:
     };
     CreatureAI* GetAI(Creature* creature) const override
     {
-        return new npc_paymasterAI(creature);
+        return new npc_paymasterNPCAI(creature);
     }
 };
-void AddSC_paymaster_npc()
+void AddSC_paymaster_npc_custom()
 {
     new Trinitycore_Paymaster_announce();
-    new npc_paymaster();
+    new npc_paymasterNPC();
 }
