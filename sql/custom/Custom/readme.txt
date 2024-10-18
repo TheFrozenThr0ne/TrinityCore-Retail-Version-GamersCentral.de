@@ -18,8 +18,9 @@ This custom scripts are all "WORLD" Database specified. So if you decide to have
 FallEvent
 NPC All Mounts
 NPC Gambler
+NPC Paymaster
 NPC Jukebox
 NPC Promotion
 NPC Reward Shop
 NPC Skip Starting
-NPC Portal Master
+NPC Portal Master -- 1 hotfixes file for broadcast_text for specify page.
